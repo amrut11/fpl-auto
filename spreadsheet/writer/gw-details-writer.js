@@ -1,70 +1,71 @@
 const ssService = require('../spreadsheet-service');
 
-const US_ROW = 5;
-const THEM_ROW = 19;
-const NO_OF_COLS = 12;
+const US_ROW = 4;
+const THEM_ROW = 18;
 
-async function update(fpl, gw, detailsSheet, detailsCells, ourTeam, theirTeam) {
+async function update(fpl, gw, sheet, ourTeam, theirTeam) {
   console.log('Updating details');
-  await populateIds(fpl, gw, detailsCells, US_ROW, ourTeam);
-  await populateIds(fpl, gw, detailsCells, THEM_ROW, theirTeam);
-
-  await detailsSheet.bulkUpdateCells(detailsCells);
+  await populateIds(fpl, gw, sheet, US_ROW, ourTeam);
+  await populateIds(fpl, gw, sheet, THEM_ROW, theirTeam);
+  await sheet.saveUpdatedCells();
 }
 
-async function populateIds(fpl, gw, cells, row, team) {
+async function populateIds(fpl, gw, sheet, row, team) {
   var players = team.players;
   var playerNames = Object.keys(players);
   for (var i = 0; i < playerNames.length; i++) {
     var playerName = playerNames[i];
     var playerId = players[playerName];
-    var colCount = 2 + i;
+    var colCount = 1 + i;
 
-    ssService.getCell(cells, row, colCount, NO_OF_COLS).setValue(playerName); // name
-    ssService.getCell(cells, row + 1, colCount, NO_OF_COLS).setValue(playerId); // id
+    sheet.getCell(row, colCount).value = playerName;
+    sheet.getCell(row + 1, colCount).value = playerId;
 
-    await updateEntryDetails(fpl, gw, playerId, cells, row, colCount);
+    await updateEntryDetails(fpl, gw, playerId, sheet, row, colCount);
   }
 
-  async function updateEntryDetails(fpl, gw, playerId, cells, row, colCount) {
+  async function updateEntryDetails(fpl, gw, playerId, sheet, row, colCount) {
     var url = 'https://fantasy.premierleague.com/api/entry/' + playerId + '/';
     var historyUrl = url + 'history/';
     var entry = await fpl.downloadPage(url);
     var history = await fpl.downloadPage(historyUrl);
 
-    ssService.getCell(cells, row + 2, colCount, NO_OF_COLS).setValue(entry.summary_overall_points);
-    ssService.getCell(cells, row + 3, colCount, NO_OF_COLS).setValue(entry.last_deadline_total_transfers);
-    ssService.getCell(cells, row + 4, colCount, NO_OF_COLS).setValue(entry.summary_overall_rank);
+    sheet.getCell(row + 2, colCount).value = entry.summary_overall_points;
+    sheet.getCell(row + 3, colCount).value = entry.last_deadline_total_transfers;
+    sheet.getCell(row + 4, colCount).value = entry.summary_overall_rank;
+
     var itb = entry.last_deadline_bank / 10;
-    ssService.getCell(cells, row + 5, colCount, NO_OF_COLS).setValue(entry.last_deadline_value / 10 - itb);
-    ssService.getCell(cells, row + 6, colCount, NO_OF_COLS).setValue(itb);
+    sheet.getCell(row + 5, colCount).value = (entry.last_deadline_value / 10 - itb);
+    sheet.getCell(row + 6, colCount).value = itb;
 
     // var totalTf = entry.extra_free_transfers + 1;
     // var tfMade = entry.event_transfers;
     // ssService.getCell(cells, row + 7, colCount, 10).setValue(totalTf);
     // ssService.getCell(cells, row + 8, colCount, 10).setValue(tfMade);
-    var tfMade = '', totalTf = '', tfCost = 0;
+    var tfMade = '',
+      totalTf = '',
+      tfCost = 0;
     if (history.current[gw - 1]) {
       tfMade = history.current[gw - 1].event_transfers;
       tfCost = history.current[gw - 1].event_transfers_cost;
-    // } else if (tfMade > totalTf) {
+      // } else if (tfMade > totalTf) {
       // tfCost = (tfMade - totalTf) * 4;
     }
     if (history.current[gw - 2]) {
       var totalTf = history.current[gw - 2].event_transfers == 0 ? 2 : 1;
     }
-    ssService.getCell(cells, row + 7, colCount, NO_OF_COLS).setValue(totalTf);
-    ssService.getCell(cells, row + 8, colCount, NO_OF_COLS).setValue(tfMade);
-    ssService.getCell(cells, row + 9, colCount, NO_OF_COLS).setValue(tfCost);
+    sheet.getCell(row + 7, colCount).value = totalTf;
+    sheet.getCell(row + 8, colCount).value = tfMade;
+    sheet.getCell(row + 9, colCount).value = tfCost;
 
-    updateChipDetails(history, cells, row, colCount);
+    updateChipDetails(history, sheet, row, colCount);
   }
 
-  function updateChipDetails(history, cells, row, colCount) {
+  function updateChipDetails(history, sheet, row, colCount) {
     var chips = history.chips;
-    ssService.getCell(cells, row + 10, colCount, NO_OF_COLS).setValue(findChip(chips, 'wildcard') + ':' +  findChip(chips, 'freehit'));
-    ssService.getCell(cells, row + 11, colCount, NO_OF_COLS).setValue(findChip(chips, 'bboost'));
-    ssService.getCell(cells, row + 12, colCount, NO_OF_COLS).setValue(findChip(chips, '3xc'));
+    sheet.getCell(row + 10, colCount).value = findChip(chips, 'wildcard') + ':' + findChip(chips, 'freehit');
+    sheet.getCell(row + 11, colCount).value = findChip(chips, 'bboost');
+    sheet.getCell(row + 12, colCount).value = findChip(chips, '3xc');
   }
 
   function findChip(chips, chip) {
@@ -81,4 +82,6 @@ async function populateIds(fpl, gw, cells, row, team) {
   }
 }
 
-module.exports = { update }
+module.exports = {
+  update
+}

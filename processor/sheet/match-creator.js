@@ -18,15 +18,12 @@ async function createMatch(fpl, updateConfig) {
   var sheetConfig = updateConfig.sheetConfig;
   var matchConfig = updateConfig.matchConfig;
 
-  var detailsSheet = sheetConfig.info.worksheets[0];
   var ourTeam = matchConfig.teammap.getTeam(matchConfig.ourTeam);
-  var detailsCells = await ssService.getCells(detailsSheet);
-  var detColCount = detailsSheet.colCount;
-  var theirTeamCell = ssService.getCell(detailsCells, FIRST_ROW, THEIR_TEAM_COL, detColCount);
-  var theirTeam = matchConfig.teammap.getTeam(theirTeamCell.value);
+  var sheet = await ssService.loadCellsFromDoc(sheetConfig.info, 0);
+  var theirTeam = matchConfig.teammap.getTeam(ssService.getValue(sheet, FIRST_ROW, THEIR_TEAM_COL));
 
-  var gw = ssService.getCell(detailsCells, FIRST_ROW, GW_COL, detColCount).value;
-  var isHome = ssService.getCell(detailsCells, SECOND_ROW, HOME_AWAY_COL, detColCount).value == 'Home';
+  var gw = ssService.getValue(sheet, FIRST_ROW, GW_COL);
+  var isHome = ssService.getValue(sheet, SECOND_ROW, HOME_AWAY_COL) == 'Home';
 
   var tournName = updateConfig.tournament.name;
   if (tournName === 'Opponent') {
@@ -35,22 +32,20 @@ async function createMatch(fpl, updateConfig) {
   }
 
   if (sheetConfig.updateDetails === 'Yes') {
-    await gwDetailsWriter.update(fpl, gw, detailsSheet, detailsCells, ourTeam, theirTeam);
+    await gwDetailsWriter.update(fpl, gw, sheet, ourTeam, theirTeam);
   }
 
-  var ourCap = theirCap = ourVc = theirVc = ourBench = theirBench = ourChip = theirChip = 'no one';
+  var ourCap = ssService.getValue(sheet, FIRST_ROW, CAP_COL);
+  var theirCap = ssService.getValue(sheet, SECOND_ROW, CAP_COL);
 
-  ourCap = ssService.getCell(detailsCells, FIRST_ROW, CAP_COL, detColCount).value;
-  theirCap = ssService.getCell(detailsCells, SECOND_ROW, CAP_COL, detColCount).value;
+  var ourVc = ssService.getValue(sheet, FIRST_ROW, VC_COL);
+  var theirVc = ssService.getValue(sheet, SECOND_ROW, VC_COL);
 
-  ourVc = ssService.getCell(detailsCells, FIRST_ROW, VC_COL, detColCount).value;
-  theirVc = ssService.getCell(detailsCells, SECOND_ROW, VC_COL, detColCount).value;
+  var ourBench = ssService.getValue(sheet, FIRST_ROW, SUB_COL);
+  var theirBench = ssService.getValue(sheet, SECOND_ROW, SUB_COL);
 
-  ourBench = ssService.getCell(detailsCells, FIRST_ROW, SUB_COL, detColCount).value;
-  theirBench = ssService.getCell(detailsCells, SECOND_ROW, SUB_COL, detColCount).value;
-
-  ourChip = ssService.getCell(detailsCells, FIRST_ROW, CHIP_COL, detColCount).value;
-  theirChip = ssService.getCell(detailsCells, SECOND_ROW, CHIP_COL, detColCount).value;
+  var ourChip = ssService.getValue(sheet, FIRST_ROW, CHIP_COL);
+  var theirChip = ssService.getValue(sheet, SECOND_ROW, CHIP_COL);
 
   console.log(ourTeam.teamName + ' cap: ' + ourCap + ' vice: ' + ourVc + ' bench: ' + ourBench + ' chip: ' + ourChip + ' ' + theirTeam.teamName + ' cap: ' + theirCap + ' vice: ' + theirVc + ' bench: ' + theirBench + ' chip: ' + theirChip);
 
@@ -67,4 +62,6 @@ async function createMatch(fpl, updateConfig) {
   return new interfaces.Match(gw, homeTeam, awayTeam, isHome);
 }
 
-module.exports = { createMatch }
+module.exports = {
+  createMatch
+}

@@ -10,16 +10,14 @@ async function updateLive(fpl, gw) {
     console.log('No live score update needed');
     return;
   }
-  var info = await ssService.getInfo(SHEET_ID);
-  var sheet = info.worksheets[TAB_INDEX];
-  var cells = await ssService.getCells(sheet);
+  var sheet = await ssService.getSheet(SHEET_ID, TAB_INDEX);
   var liveScores = scoreService.getLiveScores(fpl, gw);
-  updateBonus(fpl, liveScores.bonusPoints, cells);
-  updateBasePoints(fpl, liveScores.basePoints, cells);
-  await sheet.bulkUpdateCells(cells);
+  updateBonus(fpl, liveScores.bonusPoints, sheet);
+  updateBasePoints(fpl, liveScores.basePoints, sheet);
+  await sheet.saveUpdatedCells();
 }
 
-function updateBonus(fpl, bonusPoints, cells) {
+function updateBonus(fpl, bonusPoints, sheet) {
   var bonus = '';
   for (var i in bonusPoints) {
     var bp = bonusPoints[i];
@@ -30,21 +28,20 @@ function updateBonus(fpl, bonusPoints, cells) {
     }
     bonus += ',';
   }
-  var cell = ssService.getCell(cells, 1, 3, 3);
-  cell.setValue(bonus);
+  sheet.getCell(0, 2).value = bonus;
 }
 
-function updateBasePoints(fpl, basePoints, cells) {
-  var players = '', points = '';
+function updateBasePoints(fpl, basePoints, sheet) {
+  var players = '',
+    points = '';
   for (var i in basePoints) {
     players += fpl.getPlayerName(i) + '|';
     points += basePoints[i] + '|';
   }
-
-  var playerCell = ssService.getCell(cells, 1, 1, 3);
-  playerCell.setValue(players);
-  var pointsCell = ssService.getCell(cells, 1, 2, 3);
-  pointsCell.setValue(points);
+  sheet.getCell(0, 0).value = players;
+  sheet.getCell(0, 1).value = points;
 }
 
-module.exports = { updateLive }
+module.exports = {
+  updateLive
+}

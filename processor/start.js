@@ -61,7 +61,7 @@ async function readDetails(fpl, updateConfig) {
   var calculateScores = sheetConfig.calculateScores;
   if (findDiffs === 'Read') {
     console.log('Reading diffs');
-    return await tournDataReader.readDiffs(sheetConfig.info.worksheets[3]);
+    return await tournDataReader.readDiffs(sheetConfig.info.sheetsByIndex[3]);
   } else if (findDiffs === 'Hustle-H2H') {
     console.log('Fetching H2H diffs for Hustle league');
     return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.HUSTLE_DIFFS);
@@ -76,10 +76,10 @@ async function readDetails(fpl, updateConfig) {
     return await havenClDiff.getDiffs(fpl, updateConfig, LEAGUE_CONFIGS.HAVEN_CL_DIFFS);
   } else if (calculateScores === 'ReadLive') {
     console.log('Reading live scores');
-    return await tournDataReader.readLive(sheetConfig.info.worksheets[5]);
+    return await tournDataReader.readLive(sheetConfig.info.sheetsByIndex[5]);
   } else if (calculateScores === 'ReadFinal') {
     console.log('Reading final scores');
-    return await tournDataReader.readFinal(sheetConfig.info.worksheets[3]);
+    return await tournDataReader.readFinal(sheetConfig.info.sheetsByIndex[3]);
   } else if (calculateScores === 'ReadBonus') {
     console.log('Reading LIVE bonus');
     return await bonusReader.readBonus(fpl);
