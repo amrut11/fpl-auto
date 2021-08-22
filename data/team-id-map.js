@@ -1,6 +1,7 @@
 const ffcPlayers = require('./tournament/ffc/players').allPlayers;
 const havenPlayers = require('./tournament/haven/players').allPlayers;
 const hustlePlayers = require('./tournament/hustle/players').allPlayers;
+const ffflPlayers = require('./tournament/fffl/players').allPlayers;
 
 const teamIdMap = {};
 teamIdMap[618364163] = 4807; // Amrut
@@ -20,7 +21,7 @@ tgMap[-413814520] = 'TG OC';
 
 const misc = { 'gcl': 415 };
 
-const allPlayers = Object.assign({}, havenPlayers, hustlePlayers, ffcPlayers, misc);
+const allPlayers = Object.assign({}, havenPlayers, hustlePlayers, ffcPlayers, ffflPlayers, misc);
 
 function getTeamId(chatId) {
   return teamIdMap[chatId] ? teamIdMap[chatId] : 333;

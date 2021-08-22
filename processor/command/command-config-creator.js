@@ -4,7 +4,7 @@ const BotCommands = require('../../data/enums').BotCommands;
 const tournMap = require('../../data/enums').TOURN_MAP;
 const matchConfigMap = require('../../data/enums').MATCH_CONFIG_MAP;
 
-const TOURNAMENTS = [ 'Hustle', 'Haven', 'FFFL'];
+const TOURNAMENTS = ['FFC', 'Hustle', 'Haven', 'FFFL'];
 // const TOURNAMENTS = ['FFC', 'FFC-UCL', 'Hustle', 'Haven'];
 
 async function createConfig(command, input) {
@@ -64,20 +64,20 @@ async function createConfig(command, input) {
       await addDiffConfig(configs, 'Hustle', 'Hustle-H2H');
       await addDiffConfig(configs, 'FFFL', 'FFFL-H2H');
       //await addDiffConfig(configs, 'Haven', 'Haven-CL');
-      
+
       await addScoringConfig(configs, 'Haven', 'Haven-H2H');
       break;
     case BotCommands.LEAGUE_DIFFS.command:
       await addDiffConfig(configs, 'Haven', 'Haven-H2H');
       break;
     case BotCommands.LEAGUE_CHIPS.command:
-      // await addScoringConfig(configs, 'FFC', 'FFC-Chips');
+      await addScoringConfig(configs, 'FFC', 'FFC-Chips');
       await addScoringConfig(configs, 'Hustle', 'Hustle-Chips');
       await addScoringConfig(configs, 'FFFL', 'FFFL-Chips');
       await addScoringConfig(configs, 'Haven', 'Haven-Chips');
       break;
     case BotCommands.LEAGUE_STATS.command:
-      // await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
+      await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
       await addScoringConfig(configs, 'Hustle', 'Hustle-Ownership');
       await addScoringConfig(configs, 'FFFL', 'FFFL-Ownership');
       await addScoringConfig(configs, 'Haven', 'Haven-Ownership');
@@ -160,4 +160,6 @@ function createCustomUpdateConfig(tournName, scoreType, input) {
   return new interfaces.UpdateConfig(tournament, sheetConfig);
 }
 
-module.exports = { createConfig }
+module.exports = {
+  createConfig
+}
