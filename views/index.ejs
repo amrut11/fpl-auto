@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <title>FPL</title>
+      <h1>Updated FPL</h1>
+      <% if (locals.message) { %>
+        <p><%= message %></p>
+      <% } %>
+      <% if(locals.allRecords){ %>
+        <p>Number of records: <%= allRecords.length %></p>
+        <table BORDER="1">
+          <tr>
+              <th>id</th>
+              <th>Value</th>
+          </tr>
+          <% var records = allRecords.records %>
+          <% for (var i in records) { %>
+            <tr>
+                <td><%= records[i].id %></td>
+                <td><%= records[i].value %></td>
+            </tr>
+            <% } %>
+          <% } %>
+        </table>
+      <% if(locals.botUsage){ %>
+        <p>Number of records: <%= botUsage.length %></p>
+        <table BORDER="1">
+          <tr>
+              <th>id</th>
+              <th>User id</th>
+              <th>Command</th>
+              <th>Time</th>
+          </tr>
+          <% var usageDetails = botUsage.usageDetails %>
+          <% for (var i in usageDetails) { %>
+            <tr>
+                <td><%= usageDetails[i].id %></td>
+                <td><%= usageDetails[i].userId %></td>
+                <td><%= usageDetails[i].command %></td>
+                <td><%= usageDetails[i].time %></td>
+            </tr>
+            <% } %>
+          <% } %>
+        </table>
+      <% if(locals.prices){ %>
+        <p>Number of records: <%= prices.length %></p>
+        <table BORDER="1">
+          <tr>
+              <th>id</th>
+              <th>Name</th>
+              <th>Price</th>
+          </tr>
+          <% var priceDetails = prices.priceDetails %>
+          <% for (var i in priceDetails) { %>
+            <tr>
+                <td><%= priceDetails[i].id %></td>
+                <td><%= priceDetails[i].name %></td>
+                <td><%= priceDetails[i].price %></td>
+            </tr>
+            <% } %>
+          <% } %>
+        </table>
+      <% if(locals.allAlerts){ %>
+        <p>Number of alerts: <%= allAlerts.length %></p>
+        <table BORDER="1">
+          <tr>
+              <th>command</th>
+              <th>diff</th>
+              <th>frequency</th>
+              <th>last-checked</th>
+              <th>last-processed</th>
+              <th>process-order</th>
+              <th>is-live</th>
+          </tr>
+          <% var alerts = allAlerts.alerts %>
+          <% for (var i in alerts) { %>
+            <tr>
+                <% if (alerts[i]['is-live'] === false) { %>
+                  <td style='color:red;'><%= alerts[i].command %></td>
+                <% } else {%>
+                  <td style='color:green;'><%= alerts[i].command %></td>
+                <% } %>
+                <td><%= alerts[i].diff %></td>
+                <td><%= alerts[i].frequency %></td>
+                <td><%= alerts[i]['last-checked'] %></td>
+                <td><%= alerts[i]['last-processed'] %></td>
+                <td><%= alerts[i]['process-order'] %></td>
+                <td><%= alerts[i]['is-live'] %></td>
+            </tr>
+            <% } %>
+        </table>
+      <% } %>
+      <% if(locals.ranks){ %>
+        <p>Number of managers: <%= ranks.length %></p>
+        <table BORDER="1">
+          <tr>
+              <th>id</th>
+              <th>Name</th>
+              <th>Rank</th>
+          </tr>
+          <% var rankDetails = ranks.rankDetails %>
+          <% for (var i in rankDetails) { %>
+            <tr>
+                <td><%= rankDetails[i].id %></td>
+                <td><%= rankDetails[i].name %></td>
+                <td><%= rankDetails[i].rank %></td>
+            </tr>
+            <% } %>
+        </table>
+      <% } %>
+   </head>
+</html>

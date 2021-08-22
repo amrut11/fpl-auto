@@ -1,0 +1,30 @@
+{
+  "name": "runner",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@replit/database": "^2.0.0",
+    "capture-website": "^2.0.2",
+    "console-stamp": "^0.2.9",
+    "cron": "^1.8.2",
+    "dateformat": "^3.0.3",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "fpl-api-node": "^2.2.6",
+    "fuzzy-search": "^3.2.1",
+    "google-spreadsheet": "^3.1.15",
+    "node-telegram-bot-api": "^0.40.0",
+    "pg": "^8.2.1",
+    "pg-pool": "^3.2.1",
+    "queue-event-emitter": "^2.1.1",
+    "remove-accents": "^0.4.2",
+    "request": "^2.88.0"
+  }
+}
