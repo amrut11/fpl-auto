@@ -2,21 +2,21 @@ const ssService = require('../spreadsheet-service');
 
 const TEAM_MAPPING = Object.freeze({
   'Barnsley': 'Barnsley',
-'Birmingham City': 'Birmingham',
-'Blackburn Rovers': 'Blackburn',
-'Bournemouth': 'Bournemouth',
-'Cardiff City': 'Cardiff',
-'Derby County': 'Derby',
-'Fulham': 'Fulham',
-'Hull City': 'Hull',
-'Middlesbrough': 'Middlesbrough',
-'Millwall': 'Millwall',
-'Nottingham Forest': 'Nottingham',
-'Preston North End': 'Preston',
-'QPR': 'Qpr',
-'Reading': 'Reading',
-'Stoke City': 'Stoke',
-'Swansea City': 'Swansea',
+  'Birmingham City': 'Birmingham',
+  'Blackburn Rovers': 'Blackburn',
+  'Bournemouth': 'Bournemouth',
+  'Cardiff City': 'Cardiff',
+  'Derby County': 'Derby',
+  'Fulham': 'Fulham',
+  'Hull City': 'Hull',
+  'Middlesbrough': 'Middlesbrough',
+  'Millwall': 'Millwall',
+  'Nottingham Forest': 'Nottingham',
+  'Preston North End': 'Preston',
+  'QPR': 'Qpr',
+  'Reading': 'Reading',
+  'Stoke City': 'Stoke',
+  'Swansea City': 'Swansea',
 });
 
 const NOM_SHEET_ID = process.env.FFFL_NOM_SHEET_ID;
@@ -25,42 +25,31 @@ const PP_SHEET_ID = process.env.FFFL_PP_SHEET_ID;
 
 async function updateNoms(gw) {
   gw = parseInt(gw);
-  var mapping = await createMapping();
+  var doc = await ssService.getDoc(PP_SHEET_ID);
+  var mapping = await createMapping(doc);
   var noms = await getNoms();
-  var info = await ssService.getInfo(PP_SHEET_ID);
-  var sheet = info.worksheets[gw - 1];
-  var cells = await ssService.getCells(sheet);
-  for (var rowNum = 2; rowNum <= 9; rowNum++) {
-    var homeTeam = ssService.getCell(cells, rowNum, 1, 10).value;
-    var homeNoms = noms[homeTeam];
-    var homeC = ssService.getCell(cells, rowNum, 3, 10);
-    homeC.setValue(mapping[homeNoms.cap]);
-    var homeVC = ssService.getCell(cells, rowNum, 4, 10);
-    homeVC.setValue(mapping[homeNoms.vc]);
-    var homeSub = ssService.getCell(cells, rowNum, 5, 10);
-    homeSub.setValue(mapping[homeNoms.sub]);
+  var sheet = await ssService.loadCellsFromDoc(doc, gw - 1);
+  for (var rowNum = 1; rowNum <= 8; rowNum++) {
+    var homeNoms = noms[sheet.getCell(rowNum, 0).value];
+    sheet.getCell(rowNum, 2).value = mapping[homeNoms.cap];
+    sheet.getCell(rowNum, 3).value = mapping[homeNoms.vc];
+    sheet.getCell(rowNum, 4).value = mapping[homeNoms.sub];
 
-    var awayTeam = ssService.getCell(cells, rowNum, 2, 10).value;
-    var awayNoms = noms[awayTeam];
-    var awayC = ssService.getCell(cells, rowNum, 7, 10);
-    awayC.setValue(mapping[awayNoms.cap]);
-    var awayVC = ssService.getCell(cells, rowNum, 8, 10);
-    awayVC.setValue(mapping[awayNoms.vc]);
-    var awaySub = ssService.getCell(cells, rowNum, 9, 10);
-    awaySub.setValue(mapping[awayNoms.sub]);
+    var awayNoms = noms[sheet.getCell(rowNum, 1).value];
+    sheet.getCell(rowNum, 6).value = mapping[awayNoms.cap];
+    sheet.getCell(rowNum, 7).value = mapping[awayNoms.vc];
+    sheet.getCell(rowNum, 8).value = mapping[awayNoms.sub];
   }
-  await sheet.bulkUpdateCells(cells);
+  await sheet.saveUpdatedCells();
   return 'Nominations for ' + gw + ' updated!';
 }
 
-async function createMapping() {
+async function createMapping(doc) {
   var mapping = new Object();
-  var info = await ssService.getInfo(PP_SHEET_ID);
-  var sheet = info.worksheets[38];
-  var cells = await ssService.getCells(sheet);
+  var sheet = await ssService.loadCellsFromDoc(doc, 38);
   for (var row = 3; row <= 130; row++) {
-    var hustleName = ssService.getCell(cells, row, 5, 11).value;
-    var replName = ssService.getCell(cells, row, 2, 11).value;
+    var hustleName = ssService.getValue(sheet, row, 5);
+    var replName = ssService.getValue(sheet, row, 2);
     mapping[hustleName] = replName;
   }
   return mapping;
@@ -68,15 +57,13 @@ async function createMapping() {
 
 async function getNoms() {
   var noms = new Object();
-  var info = await ssService.getInfo(NOM_SHEET_ID);
-  var sheet = info.worksheets[2];
-  var cells = await ssService.getCellsLimited(sheet, 17, 5);
+  var sheet = await ssService.getSheet(NOM_SHEET_ID, 2, 17, 5);
   for (var rowNum = 2; rowNum <= 17; rowNum++) {
-    var team = TEAM_MAPPING[ssService.getCell(cells, rowNum, 1, 5).value];
+    var team = TEAM_MAPPING[ssService.getValue(sheet, rowNum, 1)];
     noms[team] = new Object();
-    noms[team].cap = team + ssService.getCell(cells, rowNum, 3, 5).value;
-    noms[team].vc = team + ssService.getCell(cells, rowNum, 4, 5).value;
-    noms[team].sub = team + ssService.getCell(cells, rowNum, 5, 5).value;
+    noms[team].cap = team + ssService.getValue(sheet, rowNum, 3);
+    noms[team].vc = team + ssService.getValue(sheet, rowNum, 4);
+    noms[team].sub = team + ssService.getValue(sheet, rowNum, 5);
   }
   return noms;
 }
@@ -134,7 +121,11 @@ async function createFixs() {
         continue;
       }
       var awayTeam = ssService.getCell(cells, row, col, 40).value;
-      fixs.push({ gw: (col - 2), home: homeTeam, away: awayTeam });
+      fixs.push({
+        gw: (col - 2),
+        home: homeTeam,
+        away: awayTeam
+      });
       doneTeams.push(awayTeam);
     }
   }
@@ -152,4 +143,7 @@ function getGwFixs(fixs, gw) {
   return gwFixs;
 }
 
-module.exports = { updateNoms, updateFixs }
+module.exports = {
+  updateNoms,
+  updateFixs
+}
