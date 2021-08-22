@@ -3,26 +3,26 @@ const ssService = require('../spreadsheet-service');
 const LAST_ROW_NUM = 13;
 
 async function readLive(sheet) {
-  var scoreCells = await ssService.getCells(sheet);
+  await ssService.loadCells(sheet);
   var scores = '';
   for (var i = 1; i <= LAST_ROW_NUM; i++) {
-    scores += ssService.getCell(scoreCells, i, 1, 4).value + '\t';
-    scores += ssService.getCell(scoreCells, i, 2, 4).value + '\t';
-    scores += ssService.getCell(scoreCells, i, 3, 4).value + '\t';
-    scores += ssService.getCell(scoreCells, i, 4, 4).value + '\t';
+    scores += ssService.getValue(sheet, i, 1) + '\t';
+    scores += ssService.getValue(sheet, i, 2) + '\t';
+    scores += ssService.getValue(sheet, i, 3) + '\t';
+    scores += ssService.getValue(sheet, i, 4) + '\t';
     scores += '\n';
   }
   return scores;
 }
 
 async function readFinal(sheet) {
-  var scoreCells = await ssService.getCells(sheet);
-  return ssService.getCell(scoreCells, 2, 2, 2).value;
+  await ssService.loadCells(sheet);
+  return ssService.getValue(sheet, 2, 2);
 }
 
 async function readDiffs(sheet) {
-  var scoreCells = await ssService.getCells(sheet);
-  return ssService.getCell(scoreCells, 2, 1, 2).value;
+  await ssService.loadCells(sheet);
+  return ssService.getValue(sheet, 2, 1);
 }
 
 module.exports = { readLive, readFinal, readDiffs }

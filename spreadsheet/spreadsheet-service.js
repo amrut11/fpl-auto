@@ -8,11 +8,15 @@ async function getDoc(sheetId) {
   return doc;
 }
 
-async function getSheet(sheetId, tabIndex, rows, cols) {
-  var doc = await getDoc(sheetId);
+async function loadCellsFromDoc(doc, tabIndex, rows, cols) {
   var sheet = doc.sheetsByIndex[tabIndex];
   await loadCells(sheet, rows, cols);
   return sheet;
+}
+
+async function getSheet(sheetId, tabIndex, rows, cols) {
+  var doc = await getDoc(sheetId);
+  return loadCellsFromDoc(doc, tabIndex, rows, cols);
 }
 
 async function loadCells(sheet, rows, cols) {
@@ -36,4 +40,4 @@ async function updateValue(input, tabIndex, row, col, value) {
   await sheet.saveUpdatedCells();
 }
 
-module.exports = { getDoc, getSheet, loadCells, getValue, updateValue }
+module.exports = { getDoc, loadCellsFromDoc, getSheet, loadCells, getValue, updateValue }

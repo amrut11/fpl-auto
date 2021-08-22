@@ -21,11 +21,11 @@ const BONUS_COL_MAP = [0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 9, 9, 10,
 const HMT_ROW_MAP = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 39, 0, 75, 0, 95, 0, 107, 0, 115, 115, 0, 121];
 
 async function getScores(fpl) {
-  var info = await ssService.getInfo(FIXTURE_SHEET_ID);
+  var doc = await ssService.getDoc(FIXTURE_SHEET_ID);
   var gw = await fpl.init(1000);
-  var msg = await getLeagueScores(gw, info, HLL);
+  var msg = await getLeagueScores(gw, doc, HLL);
   msg += ':::';
-  msg += await getLeagueScores(gw, info, HPL);
+  msg += await getLeagueScores(gw, doc, HPL);
   //msg += await getFaCupScores(info);
   // msg += await getHclScores(gw, info);
   var hmtRow = HMT_ROW_MAP[gw];
@@ -36,28 +36,28 @@ async function getScores(fpl) {
   return msg;
 }
 
-async function getLeagueScores(gw, info, league) {
+async function getLeagueScores(gw, doc, league) {
   var msg = '*LIVE OVERALL ' + league.name + ' SCORES*';
   msg += '\n---------------------';
-  var fixtureCells = await ssService.getCells(info.worksheets[league.fixIndex]);
-  msg += getFixtureScores(fixtureCells, gw);
+  var fixtureSheet = await ssService.loadCellsFromDoc(doc, league.fixIndex);
+  msg += getFixtureScores(fixtureSheet, gw);
   msg += '\n\n=====================\n\n';
   msg += '*LIVE BONUS SCORES*';
   msg += '\n---------------------';
-  var bonusCells = await ssService.getCells(info.worksheets[BONUS_INDEX]);
-  msg += getBonusScores(bonusCells, gw,league.bonusRow);
+  var bonusSheet = await ssService.loadCellsFromDoc(doc, BONUS_INDEX);
+  msg += getBonusScores(bonusSheet, gw,league.bonusRow);
   return msg;
 }
 
-function getFixtureScores(cells, gw) {
+function getFixtureScores(sheet, gw) {
   var rowNumber = FIX_ROW_MAP[gw];
   var output = '';
   for (var i = 0; i < 5; i++) {
-    var homeTeam = ssService.getCell(cells, rowNumber + i, 2, FIX_NO_OF_COLS).value;
-    var homeScore = ssService.getCell(cells, rowNumber + i, 3, FIX_NO_OF_COLS).value;
-    var margin = ssService.getCell(cells, rowNumber + i, 4, FIX_NO_OF_COLS).value;
-    var awayScore = ssService.getCell(cells, rowNumber + i, 5, FIX_NO_OF_COLS).value;
-    var awayTeam = ssService.getCell(cells, rowNumber + i, 6, FIX_NO_OF_COLS).value;
+    var homeTeam = ssService.getValue(sheet, rowNumber + i, 2);
+    var homeScore = ssService.getValue(sheet, rowNumber + i, 3);
+    var margin = ssService.getValue(sheet, rowNumber + i, 4);
+    var awayScore = ssService.getValue(sheet, rowNumber + i, 5);
+    var awayTeam = ssService.getValue(sheet, rowNumber + i, 6);
     if (margin < 10) {
       output += '\n*' + homeTeam + ' - ' + homeScore + '* (' + margin + ') *' + awayScore + ' - ' + awayTeam + '*';
     } else if (homeScore > awayScore) {
@@ -69,12 +69,12 @@ function getFixtureScores(cells, gw) {
   return output;
 }
 
-function getBonusScores(cells, gw, bonusRow) {
+function getBonusScores(sheet, gw, bonusRow) {
   var colNumber = BONUS_COL_MAP[gw];
   var bonuses = new Object();
   for (var i = bonusRow; i < bonusRow + 10; i++) {
-    var teamName = ssService.getCell(cells, i, 1, BONUS_NO_OF_COLS).value;
-    var score = ssService.getCell(cells, i, colNumber, BONUS_NO_OF_COLS).value;
+    var teamName = ssService.getValue(sheet, i, 1);
+    var score = ssService.getValue(sheet, i, colNumber);
     bonuses[teamName] = score;
   }
   bonuses = sorter.sort(bonuses);
