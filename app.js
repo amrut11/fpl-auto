@@ -11,7 +11,6 @@ const db = require('./db/repldb-service');
 const hmtRanks = require('./processor/request/hmt-ranks');
 const fplDataWriter = require('./spreadsheet/writer/fpl-data-writer');
 const plannerTeamsWriter = require('./spreadsheet/writer/planner-teams-writer');
-const euroDataWriter = require('./spreadsheet/writer/euro-data-writer');
 
 const ipl = require('./alerts/ipl-alert-service');
 const vaccine = require('./alerts/vaccine-alert-service');
@@ -29,11 +28,6 @@ app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 var init = false;
-
-app.get('/haven-history', async function(req, res) {
-  var response = await havenHistory.getHistory();
-  res.render('index', { message: response });
-});
 
 app.get('/', async function(req, res) {
   res.render('index');
@@ -85,16 +79,6 @@ app.get('/resetAlerts', async function(req, res) {
   res.render('index');
 });
 
-app.get('/ipl', async function(req, res) {
-  await ipl.alert();
-  res.render('index');
-});
-
-app.get('/vaccine', async function(req, res) {
-  await vaccine.alert();
-  res.render('index');
-});
-
 app.get('/raw', async function(req, res) {
   await db.showRaw();
   res.render('index');
@@ -102,17 +86,27 @@ app.get('/raw', async function(req, res) {
 
 app.get('/fdr', async function(req, res) {
   await fplDataWriter.updatePlayers();
-  // await plannerTeamsWriter.updateTeams();
+  await plannerTeamsWriter.updateTeams();
   res.render('index');
 });
 
-app.get('/euro', async function(req, res) {
-  await euroDataWriter.updatePlayerData();
-  res.render('index');
+app.get('/haven-history', async function(req, res) {
+  var response = await havenHistory.getHistory();
+  res.render('index', { message: response });
 });
 
 app.get('/price-change', async function(req, res) {
   await priceChange.checkChanges();
+  res.render('index');
+});
+
+app.get('/ipl', async function(req, res) {
+  await ipl.alert();
+  res.render('index');
+});
+
+app.get('/vaccine', async function(req, res) {
+  await vaccine.alert();
   res.render('index');
 });
 

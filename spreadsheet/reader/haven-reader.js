@@ -10,8 +10,6 @@ const FACUP_INDEX = 6; // TBD
 const HCL_INDEX = 9; // TBD
 const HMT_INDEX = 10; // TBD
 
-const FIX_NO_OF_COLS = 9;
-const BONUS_NO_OF_COLS = 19;
 const FACUP_NO_OF_COLS = 5;
 const HCL_NO_OF_COLS = 22;
 const HMT_NO_OF_COLS = 11;
@@ -39,12 +37,12 @@ async function getScores(fpl) {
 async function getLeagueScores(gw, doc, league) {
   var msg = '*LIVE OVERALL ' + league.name + ' SCORES*';
   msg += '\n---------------------';
-  var fixtureSheet = await ssService.loadCellsFromDoc(doc, league.fixIndex);
+  var fixtureSheet = await ssService.getSheetFromDoc(doc, league.fixIndex);
   msg += getFixtureScores(fixtureSheet, gw);
   msg += '\n\n=====================\n\n';
   msg += '*LIVE BONUS SCORES*';
   msg += '\n---------------------';
-  var bonusSheet = await ssService.loadCellsFromDoc(doc, BONUS_INDEX);
+  var bonusSheet = await ssService.getSheetFromDoc(doc, BONUS_INDEX);
   msg += getBonusScores(bonusSheet, gw,league.bonusRow);
   return msg;
 }

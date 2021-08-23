@@ -19,7 +19,7 @@ async function createMatch(fpl, updateConfig) {
   var matchConfig = updateConfig.matchConfig;
 
   var ourTeam = matchConfig.teammap.getTeam(matchConfig.ourTeam);
-  var sheet = await ssService.loadCellsFromDoc(sheetConfig.info, 0);
+  var sheet = await ssService.getSheetFromDoc(sheetConfig.info, 0);
   var theirTeam = matchConfig.teammap.getTeam(ssService.getValue(sheet, FIRST_ROW, THEIR_TEAM_COL));
 
   var gw = ssService.getValue(sheet, FIRST_ROW, GW_COL);

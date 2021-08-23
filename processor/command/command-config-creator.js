@@ -77,7 +77,7 @@ async function createConfig(command, input) {
       await addScoringConfig(configs, 'Haven', 'Haven-Chips');
       break;
     case BotCommands.LEAGUE_STATS.command:
-      await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
+      // await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
       await addScoringConfig(configs, 'Hustle', 'Hustle-Ownership');
       await addScoringConfig(configs, 'FFFL', 'FFFL-Ownership');
       await addScoringConfig(configs, 'Haven', 'Haven-Ownership');

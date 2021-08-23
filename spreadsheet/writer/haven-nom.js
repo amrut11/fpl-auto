@@ -5,106 +5,99 @@ const PP_SHEET_ID = process.env.HAVEN_PP_SHEET_ID;
 const TEAM_PP_SHEET_ID = process.env.HAVEN_TEAM_PP_SHEET_ID;
 const CUP_SHEET_ID = process.env.HAVEN_CUP_SHEET_ID;
 
-const NO_OF_COLS = 15;
-
 const TEAMS = ['Atletico', 'Barca', 'Betis', 'Bilbao', 'Celta', 'R Madrid', 'Sevilla', 'Sociedad', 'Valencia', 'Villarreal', 'Arsenal', 'Chelsea', 'Everton', 'Leeds', 'Leicester', 'Liverpool', 'Man City', 'Man Utd', 'Spurs', 'Wolves'];
 
 async function updateNoms(competition) {
-  var info = await ssService.getInfo(NOM_SHEET_ID);
-  var sheet = info.worksheets[0];
-  var cells = await ssService.getCells(sheet);
+  var sheet = await ssService.getSheet(NOM_SHEET_ID,0);
   if (competition == 'League') {
-    var noms = getLeagueNoms(cells);
+    var noms = getLeagueNoms(sheet);
     await updatePpSheet(noms);
     await updateTeamPpSheet(noms);
   } else if (competition == 'CL') {
-    var noms = getClNoms(cells);
+    var noms = getClNoms(sheet);
     await updateClNoms(noms);
   }
   return 'Nominations for ' + competition + ' updated!';
 }
 
-function getLeagueNoms(cells) {
+function getLeagueNoms(sheet) {
   var noms = new Object();
-  noms.match = ssService.getCell(cells, 1, 3, NO_OF_COLS).value;
+  noms.match = ssService.getValue(sheet, 1, 3);
   for (var rowNum = 7; rowNum <= 31; rowNum++) {
-    var team = ssService.getCell(cells, rowNum, 2, NO_OF_COLS).value;
+    var team = ssService.getValue(sheet, rowNum, 2);
     if (team == '') {
       continue;
     }
     var nomination = new Object();
-    nomination.cap = ssService.getCell(cells, rowNum, 3, NO_OF_COLS).value;
-    nomination.vc = ssService.getCell(cells, rowNum, 4, NO_OF_COLS).value;
-    nomination.sub = ssService.getCell(cells, rowNum, 5, NO_OF_COLS).value;
-    nomination.chip = ssService.getCell(cells, rowNum, 6, NO_OF_COLS).value;
-    nomination.chipGw = ssService.getCell(cells, rowNum, 7, NO_OF_COLS).value;
+    nomination.cap = ssService.getValue(sheet, rowNum, 3);
+    nomination.vc = ssService.getValue(sheet, rowNum, 4);
+    nomination.sub = ssService.getValue(sheet, rowNum, 5);
+    nomination.chip = ssService.getValue(sheet, rowNum, 6);
+    nomination.chipGw = ssService.getValue(sheet, rowNum, 7);
     noms[team] = nomination;
   }
   return noms;
 }
 
 async function updatePpSheet(noms) {
-  var info = await ssService.getInfo(PP_SHEET_ID);
-  var firstGameSheet = info.worksheets[(noms.match - 1) * 2];
-  var secondGameSheet = info.worksheets[(noms.match - 1) * 2 + 1];
-  var firstSheetCells = await ssService.getCells(firstGameSheet);
-  var secondSheetCells = await ssService.getCells(secondGameSheet);
-  for (var rowNum = 2; rowNum <= 11; rowNum++) {
-    updatePpRow(noms, firstSheetCells, secondSheetCells, rowNum, 1, 3);
-    updatePpRow(noms, firstSheetCells, secondSheetCells, rowNum, 2, 7);
+  var doc = await ssService.getDoc(PP_SHEET_ID);
+  var firstGameSheet =await ssService.getSheetFromDoc(doc,(noms.match - 1)*2);
+  var secondGameSheet =await ssService.getSheetFromDoc(doc,(noms.match - 1)*2+1);
+  for (var rowNum = 1; rowNum <= 10; rowNum++) {
+    updatePpRow(noms, firstGameSheet, secondGameSheet, rowNum, 0, 2);
+    updatePpRow(noms, firstGameSheet, secondGameSheet, rowNum, 1, 6);
   }
-  await firstGameSheet.bulkUpdateCells(firstSheetCells);
-  await secondGameSheet.bulkUpdateCells(secondSheetCells);
+  await firstGameSheet.saveUpdatedCells();
+  await secondGameSheet.saveUpdatedCells();
 }
 
-function updatePpRow(noms, firstSheetCells, secondSheetCells, rowNum, teamCol, capCol) {
-  var nom = noms[ssService.getCell(firstSheetCells, rowNum, teamCol, 10).value];
-  ssService.getCell(firstSheetCells, rowNum, capCol, 10).setValue(nom.cap);
-  ssService.getCell(secondSheetCells, rowNum, capCol, 10).setValue(nom.cap);
-  ssService.getCell(firstSheetCells, rowNum, capCol + 1, 10).setValue(nom.vc);
-  ssService.getCell(secondSheetCells, rowNum, capCol + 2, 10).setValue(nom.sub);
+function updatePpRow(noms, firstGameSheet, secondGameSheet, rowNum, teamCol, capCol) {
+  var nom = noms[ssService.getValue(firstSheetCells, rowNum, teamCol)];
+  firstGameSheet.getCell(rowNum,capCol).value = nom.cap;
+  secondGameSheet.getCell(rowNum,capCol).value = nom.cap;
+  firstGameSheet.getCell(rowNum, capCol+1).value = nom.vc;
+  secondGameSheet.getCell(rowNum,capCol+2).value = nom.sub;
   var chip = nom.chip;
   if (chip == 'DVC' || ((chip == 'TC' || chip == 'ACE') && nom.chipGw == 'Game 1')) {
-    ssService.getCell(firstSheetCells, rowNum, capCol + 3, 10).setValue(chip);
+    firstGameSheet.getCell(rowNum,capCol+3).value = chip;
   } else if (chip == 'SS' || ((chip == 'TC' || chip == 'ACE') && nom.chipGw == 'Game 2')) {
-    ssService.getCell(secondSheetCells, rowNum, capCol + 3, 10).setValue(chip);
+    secondGameSheet.getCell(rowNum,capCol+3).value = chip;
   }
 }
 
 async function updateTeamPpSheet(noms) {
-  var info = await ssService.getInfo(TEAM_PP_SHEET_ID);
+  var doc = await ssService.getDoc(TEAM_PP_SHEET_ID);
   for (var i in TEAMS) {
     var team = TEAMS[i];
     console.dir(team);
-    var sheet = info.worksheets[i];
-    var cells = await ssService.getCells(sheet);
+    var sheet = await ssService.getSheetFromDoc(doc,i);
     var nom = noms[team];
     var playerRowMap = new Object();
-    var col = (noms.match - 1) * 2 + 3;
+    var col = (noms.match - 1) * 2 + 2;
     for (var rowNum = 2; rowNum <= 11; rowNum++) {
-      playerRowMap[ssService.getCell(cells, rowNum, 1, 40).value] = rowNum;
+      playerRowMap[ssService.getValue(sheet, rowNum)] = rowNum-1;
     }
     var capRow = playerRowMap[nom.cap];
     if (capRow) {
-      ssService.getCell(cells, capRow, col, 40).setValue('C');
-      ssService.getCell(cells, capRow, col + 1, 40).setValue('C');
+      sheet.getCell(capRow,col).value = 'C';
+      sheet.getCell(capRow,col+1).value = 'C';
       if (nom.chip == 'TC') {
         if (nom.chipGw == 'Game 1') {
-          ssService.getCell(cells, capRow, col, 40).setValue('TC');
+          sheet.getCell(capRow,col).value = 'TC';
         } else {
-          ssService.getCell(cells, capRow, col + 1, 40).setValue('TC');
+          sheet.getCell(capRow+1,col).value = 'TC';
         }
       }
     }
     var vcRow = playerRowMap[nom.vc];
     if (vcRow) {
-      ssService.getCell(cells, vcRow, col, 40).setValue(nom.chip == 'DVC' ? 'DVC' : 'VC');
+      sheet.getCell(vcRow,col).value = nom.chip == 'DVC' ? 'DVC' : 'VC';
     }
     var subRow = playerRowMap[nom.sub];
     if (subRow) {
-      ssService.getCell(cells, subRow, col + 1, 40).setValue(nom.chip == 'SS' ? 'SS' : 'S');
+      sheet.getCell(subRow,col+1).value = nom.chip == 'SS' ? 'SS' : 'S';
     }
-    await sheet.bulkUpdateCells(cells);
+    await sheet.saveUpdatedCells();
   }
 }
 
