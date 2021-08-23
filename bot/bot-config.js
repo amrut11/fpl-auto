@@ -107,8 +107,10 @@ function configure() {
   });
 
   bot.onText(/[Tt]eam (.+)/, async (msg, match) => {
-    var teamId = teamIdMap.getTeamIdByName(match[1]);
-    commandProcessor.runCommand(BotCommands.TEAM_SCORE, msg.chat.id, teamId);
+    var split = match[1].split(',');
+    var teamId = teamIdMap.getTeamIdByName(split[0]);
+    var input = teamId + (split.length > 1 ? (',' + split[1].trim()) : '');
+    commandProcessor.runCommand(BotCommands.TEAM_SCORE, msg.chat.id, input);
   });
 
   return bot;

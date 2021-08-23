@@ -164,8 +164,8 @@ async function readDetails(fpl, updateConfig) {
     var playerName = calculateScores.split('::')[1];
     return await playerDetails.getPlayerDetails(fpl, playerName);
   } else if (calculateScores.startsWith('TeamScore')) {
-    var playerId = calculateScores.split('::')[1];
-    return await managerGwScore.getTeamScore(fpl, playerId);
+    var input = calculateScores.split('::')[1];
+    return await managerGwScore.getTeamScore(fpl, input);
   } else if (calculateScores.startsWith('IPL-Live')) {
     console.log('Fetching Live IPL Scores');
     return await liveIpl.getScores();

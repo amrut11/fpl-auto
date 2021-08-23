@@ -1,8 +1,14 @@
 const scoreService = require('./live-gw-score-service');
 const fplTeam = require('../request/fpl-team');
 
-async function getTeamScore(fpl, playerId) {
+async function getTeamScore(fpl, input) {
   var gw = await fpl.init(1000);
+  var split = input.split(',');
+  var playerId = split[0];
+  if (split.length > 1) {
+    gw = split[1];
+    await fpl.init(gw);
+  }
   var msg = '*LIVE SCORES FOR GW ' + gw + '*\n';
   msg += await getPlayerName(fpl, playerId);
   msg += '\n---------------------\n';
