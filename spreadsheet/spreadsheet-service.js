@@ -8,13 +8,13 @@ async function getDoc(sheetId) {
   return doc;
 }
 
-async function getSheet(sheetId, tabIndex, rows, cols) {
+async function getSheet(sheetId, input, rows, cols) {
   var doc = await getDoc(sheetId);
-  return getSheetFromDoc(doc, tabIndex, rows, cols);
+  return getSheetFromDoc(doc, input, rows, cols);
 }
 
-async function getSheetFromDoc(doc, tabIndex, rows, cols) {
-  var sheet = doc.sheetsByIndex[tabIndex];
+async function getSheetFromDoc(doc, input, rows, cols) {
+  var sheet = typeof input === 'string' ? doc.sheetsByTitle[input] : doc.sheetsByIndex[input];
   await loadCells(sheet, rows, cols);
   return sheet;
 }

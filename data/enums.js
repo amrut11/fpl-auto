@@ -85,6 +85,10 @@ const BotCommands = Object.freeze({
     'command': 'fffl_nomination',
     'type': 'mod'
   },
+  NOMS: {
+    'command': 'noms',
+    'type': 'public'
+  },
   PLAYER_SEARCH: {
     'command': 'player_search',
     'type': 'public'

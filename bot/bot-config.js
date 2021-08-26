@@ -102,6 +102,10 @@ function configure() {
     commandProcessor.runCommand(BotCommands.FFFL_NOMINATION, msg.chat.id, match[1]);
   });
 
+  bot.onText(/[Nn]oms (.+)/, async (msg, match) => {
+    commandProcessor.runCommand(BotCommands.NOMS, msg.chat.id, match[1]);
+  });
+
   bot.onText(/[Pp]layer (.+)/, async (msg, match) => {
     commandProcessor.runCommand(BotCommands.PLAYER_SEARCH, msg.chat.id, match[1]);
   });

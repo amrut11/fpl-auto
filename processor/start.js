@@ -12,6 +12,7 @@ const vaccine = require('./live/vaccine');
 const bonusReader = require('../spreadsheet/reader/bonus-reader');
 const tournDataReader = require('../spreadsheet/reader/tourn-data-reader');
 const havenScoreReader = require('../spreadsheet/reader/haven-reader');
+const nomsReader = require('../spreadsheet/reader/noms-reader');
 const hustleRumble = require('./scoring/hustle-rumble');
 const ipl = require('../spreadsheet/reader/ipl-reader');
 
@@ -160,6 +161,10 @@ async function readDetails(fpl, updateConfig) {
     var gw = calculateScores.split('::')[1];
     console.log('Updating FFFL Nominations for GW' + gw);
     return await ffflNom.updateNoms(gw);
+  } else if (calculateScores.startsWith('Noms')) {
+    var tournament = calculateScores.split('::')[1];
+    console.log('Reading nominations for ' + tournament);
+    return await nomsReader.getNoms(tournament);
   } else if (calculateScores.startsWith('PlayerSearch')) {
     var playerName = calculateScores.split('::')[1];
     return await playerDetails.getPlayerDetails(fpl, playerName);

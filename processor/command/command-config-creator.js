@@ -101,6 +101,9 @@ async function createConfig(command, input) {
     case BotCommands.FFFL_NOMINATION.command:
       configs.push(createCustomUpdateConfig('FFFL Nomination', 'FFFL-Nomination', input));
       break;
+    case BotCommands.NOMS.command:
+      configs.push(createCustomUpdateConfig('Nominations', 'Noms', input));
+      break;
     case BotCommands.PLAYER_SEARCH.command:
       configs.push(createCustomUpdateConfig('Player Search', 'PlayerSearch', input));
       break;

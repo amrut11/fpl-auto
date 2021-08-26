@@ -3,7 +3,6 @@ const ssService = require('../spreadsheet-service');
 const SHEET_ID = process.env.LIVE_SHEET_ID;
 
 const TAB_INDEX = 0;
-const NO_OF_COLS = 2;
 
 async function readBonus(fpl) {
   var gw = await fpl.init(1000);
