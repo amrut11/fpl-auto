@@ -236,7 +236,7 @@ async function updateScores(fpl, updateConfig, match, futureGame) {
 }
 
 async function isSendResponse(chatId, updateConfig, response) {
-  if (chatId != process.env.h2hChannelId && chatId != process.env.leagueChannelId && chatId != process.env.iplChannelId && chatId != process.env.vaccineChannelId) {
+  if (chatId != process.env.personalChannelId && chatId != process.env.leagueChannelId && chatId != process.env.iplChannelId && chatId != process.env.vaccineChannelId) {
     return true;
   }
   var lastResponse = await dbService.getAlertResponse(updateConfig.tournament.name, updateConfig.sheetConfig.findDiffs, updateConfig.sheetConfig.calculateScores);

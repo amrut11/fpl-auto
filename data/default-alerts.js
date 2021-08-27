@@ -112,6 +112,14 @@ const DefaultAlerts = Object.freeze([
     'is-live': true
   },
   {
+    command: 'personal_fast',
+    frequency: 300,
+    'last-checked': null,
+    'last-processed': null,
+    'process-order': 52,
+    'is-live': true
+  },
+  {
     command: 'league_diffs',
     frequency: 900,
     'last-checked': null,
@@ -142,7 +150,15 @@ const DefaultAlerts = Object.freeze([
     'last-processed': null,
     'process-order': 71,
     'is-live': true
-  }
+  },
+  {
+    command: 'personal_slow',
+    frequency: 2400,
+    'last-checked': null,
+    'last-processed': null,
+    'process-order': 72,
+    'is-live': true
+  },
 ]);
 
 module.exports = { DefaultAlerts }

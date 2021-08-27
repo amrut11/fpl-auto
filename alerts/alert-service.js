@@ -9,7 +9,7 @@ const Database = require('@replit/database');
 
 const dateUtils = require('../utils/date-utils');
 
-const H2H_CHANNEL_ID = process.env.h2hChannelId;
+const PERSONAL_CHANNEL_ID = process.env.personalChannelId;
 const LEAGUE_CHANNEL_ID = process.env.leagueChannelId;
 const LIVE_MATCH_CHANNEL_ID = process.env.fplChannelId;
 
@@ -74,8 +74,7 @@ async function executeAlerts(allAlerts) {
       if (command === 'live_matches') {
         chatId = LIVE_MATCH_CHANNEL_ID;
       } else {
-        //chatId = process.env.author;
-        chatId = LEAGUE_ALERT_COMMANDS.includes(command) ? LEAGUE_CHANNEL_ID : H2H_CHANNEL_ID;
+        chatId = LEAGUE_ALERT_COMMANDS.includes(command) ? LEAGUE_CHANNEL_ID : PERSONAL_CHANNEL_ID;
       }
       await start.start(bot.getBot(), chatId, configs);
       await dbService.updateAlert(alert['process-order'], 'last-processed');

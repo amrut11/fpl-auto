@@ -53,8 +53,14 @@ const BotCommands = Object.freeze({
     'command': 'league_h2h',
     'type': 'mod'
   },
+  PERSONAL_FAST: {
+    'command': 'personal_fast'
+  },
   LEAGUE_INDIVIDUAL: {
     'command': 'league_individual',
+  },
+  PERSONAL_SLOW: {
+    'command': 'personal_slow'
   },
   LEAGUE_DIFFS: {
     'command': 'league_diffs',

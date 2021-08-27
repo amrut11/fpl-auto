@@ -47,28 +47,31 @@ async function createConfig(command, input) {
       await addConfigs(configs, 'No', 'None', 'None', 'ReadFinal');
       break;
     case BotCommands.LEAGUE_H2H.command:
+      await addScoringConfig(configs, 'Haven', 'Haven-Overall');
+      break;
+    case BotCommands.LEAGUE_INDIVIDUAL.command:
+      await addScoringConfig(configs, 'Haven', 'Haven-Individual');
+      await addScoringConfig(configs, 'Haven', 'Haven-H2H');
+      await addScoringConfig(configs, 'Haven', 'Haven-Ownership-Top10');
+      
+      //await addDiffConfig(configs, 'Haven', 'Haven-CL');
+      break;
+    case BotCommands.LEAGUE_DIFFS.command:
+      await addDiffConfig(configs, 'Haven', 'Haven-H2H');
+      break;
+    case BotCommands.PERSONAL_FAST.command:
       // await addScoringConfig(configs, 'FFC', 'FFC-H2H');
       await addScoringConfig(configs, 'FFFL', 'FFFL-H2H');
       await addScoringConfig(configs, 'Hustle', 'Hustle-H2H');
       // configs.push(createCustomUpdateConfig('HUSTLE RUMBLE', 'Hustle-Rumble'));
-
-      await addScoringConfig(configs, 'Haven', 'Haven-Overall');
-      await addScoringConfig(configs, 'Haven', 'Haven-Ownership-Top10');
       break;
-    case BotCommands.LEAGUE_INDIVIDUAL.command:
+    case BotCommands.PERSONAL_SLOW.command:
       // await addScoringConfig(configs, 'FFC', 'FFC-Individual');
       await addScoringConfig(configs, 'Hustle', 'Hustle-Individual');
       await addScoringConfig(configs, 'FFFL', 'FFFL-Individual');
-      await addScoringConfig(configs, 'Haven', 'Haven-Individual');
 
       await addDiffConfig(configs, 'Hustle', 'Hustle-H2H');
       await addDiffConfig(configs, 'FFFL', 'FFFL-H2H');
-      //await addDiffConfig(configs, 'Haven', 'Haven-CL');
-
-      await addScoringConfig(configs, 'Haven', 'Haven-H2H');
-      break;
-    case BotCommands.LEAGUE_DIFFS.command:
-      await addDiffConfig(configs, 'Haven', 'Haven-H2H');
       break;
     case BotCommands.LEAGUE_CHIPS.command:
       await addScoringConfig(configs, 'FFC', 'FFC-Chips');
