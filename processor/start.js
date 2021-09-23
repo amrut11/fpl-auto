@@ -197,15 +197,12 @@ async function runConfig(fpl, updateConfig) {
   var currEvent = await fpl.init(match.gw);
   var futureGame = match.gw > currEvent;
 
-  // Run team updates
   var teamWriter = new gwTeamWriter();
   await teamWriter.updateTeams(fpl, updateConfig, match, currEvent, futureGame);
 
-  // Run diffs
   var diff = new updateConfig.tournament.differential();
   await diff.calculateDiffs(fpl, updateConfig, match, currEvent, futureGame);
 
-  // Run scores
   await updateScores(fpl, updateConfig, match, futureGame);
 }
 

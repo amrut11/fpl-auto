@@ -12,7 +12,6 @@ async function showRaw() {
   for (var i in list) {
     if (list[i].includes('b Jayant Yadav') || list[i].includes('Kagiso Rabada')) {
       // await db.delete(list[i]);
-      // await db.set(list[i], 'Hi');
       console.dir('deleted ' + list[i]);
     }
   }

@@ -3,7 +3,7 @@ const ssService = require('../spreadsheet-service');
 const SHEET_ID = process.env.H2H_FIXTURE_SHEET_ID;
 const NOMS_SHEET = 'Noms';
 
-const TOURNAMENTS = { 'ffc': ['FFC'], 'hustle': ['HUSTLE'], 'fffl': ['FFFL'], 'haven': ['HAVEN'], 'all': ['FFC', 'Hustle', 'FFFL', 'Haven'] };
+const TOURNAMENTS = { 'ffc': ['FFC'], 'hustle': ['Hustle'], 'fffl': ['FFFL'], 'haven': ['Haven'], 'all': ['FFC', 'Hustle', 'FFFL', 'Haven'] };
 
 async function getNoms(tournament) {
   var msg = ':::';

@@ -52,7 +52,7 @@ async function updatePpSheet(noms) {
 }
 
 function updatePpRow(noms, firstGameSheet, secondGameSheet, rowNum, teamCol, capCol) {
-  var nom = noms[ssService.getValue(firstSheetCells, rowNum, teamCol)];
+  var nom = noms[ssService.getValue(firstGameSheet, rowNum + 1, teamCol + 1)];
   firstGameSheet.getCell(rowNum,capCol).value = nom.cap;
   secondGameSheet.getCell(rowNum,capCol).value = nom.cap;
   firstGameSheet.getCell(rowNum, capCol+1).value = nom.vc;
@@ -67,15 +67,14 @@ function updatePpRow(noms, firstGameSheet, secondGameSheet, rowNum, teamCol, cap
 
 async function updateTeamPpSheet(noms) {
   var doc = await ssService.getDoc(TEAM_PP_SHEET_ID);
-  for (var i in TEAMS) {
+  for (var i =0;i<TEAMS.length;i++) {
     var team = TEAMS[i];
-    console.dir(team);
     var sheet = await ssService.getSheetFromDoc(doc,i);
     var nom = noms[team];
     var playerRowMap = new Object();
     var col = (noms.match - 1) * 2 + 2;
     for (var rowNum = 2; rowNum <= 11; rowNum++) {
-      playerRowMap[ssService.getValue(sheet, rowNum)] = rowNum-1;
+      playerRowMap[ssService.getValue(sheet, rowNum,1)] = rowNum-1;
     }
     var capRow = playerRowMap[nom.cap];
     if (capRow) {

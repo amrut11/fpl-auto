@@ -1,5 +1,7 @@
 const TelegramBot = require('node-telegram-bot-api');
 
+const NOM_GROUP_ID = process.env.nomGroupId;
+
 const BotCommands = require('../data/enums').BotCommands;
 const commandProcessor = require('../processor/command/command-processor');
 const teamIdMap = require('../data/team-id-map');
@@ -103,7 +105,7 @@ function configure() {
   });
 
   bot.onText(/[Nn]oms (.+)/, async (msg, match) => {
-    commandProcessor.runCommand(BotCommands.NOMS, msg.chat.id, match[1]);
+    commandProcessor.runCommand(BotCommands.NOMS, NOM_GROUP_ID, match[1]);
   });
 
   bot.onText(/[Pp]layer (.+)/, async (msg, match) => {

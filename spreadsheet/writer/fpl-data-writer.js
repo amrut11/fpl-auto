@@ -10,7 +10,7 @@ const FIXTURE_COLUMN = 1;
 const PLAYERS_COLUMN = 2;
 const GWFIXS_COLUMN = 3;
 
-const TAB_INDEX = 9;
+const TAB_INDEX = 7;
 
 async function updateResults() {
   var results = await resultsWriter.getResults();

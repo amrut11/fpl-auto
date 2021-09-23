@@ -4,7 +4,7 @@ const fplTeam = require('../../processor/request/fpl-team');
 
 const PLANNER_SHEET_ID = process.env.PLANNER_SHEET_ID;
 
-const TAB_INDEX = 14;
+const TAB = 'Teams';
 
 const TEAMS = [{ name: 'Amrut', id: 4807},{ name: 'Tanveer', id: 1518},{ name: 'Sahil', id: 3380},{ name: 'Gaurang', id: 67150},{ name: 'Shashank', id: 878138},{ name: 'Srijan', id: 928594},{ name: 'Brynal', id: 5221},{ name: 'Saleem', id: 590444},{ name: 'Sushant', id: 4748},{ name: 'Shek', id: 8705},{ name: 'Hitesh', id: 3306805}];
 
@@ -16,7 +16,7 @@ async function updateTeams() {
     var players = await getPlayers(team.id);
     msg += team.name + ':' + players + '^'+team.name+'^';
   }
-  await ssService.updateValue(PLANNER_SHEET_ID, TAB_INDEX, 1, 1, msg);
+  await ssService.updateValue(PLANNER_SHEET_ID, TAB, 1, 1, msg);
 }
 
 async function getPlayers(teamId) {

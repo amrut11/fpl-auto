@@ -24,7 +24,7 @@ async function getScores(fpl) {
   var msg = await getLeagueScores(gw, doc, HLL);
   msg += ':::';
   msg += await getLeagueScores(gw, doc, HPL);
-  //msg += await getFaCupScores(info);
+  // msg += await getFaCupScores(info);
   // msg += await getHclScores(gw, info);
   var hmtRow = HMT_ROW_MAP[gw];
   if (hmtRow > 0) {

@@ -4,7 +4,7 @@ const fplTeam = require('../request/fpl-team');
 
 const RUMBLE_SHEET_ID = process.env.HUSTLE_RUMBLE_SHEET_ID;
 
-const ELIMINATIONS = [0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 14, 7, 7, 13, 15, 17];
+const ELIMINATIONS = [0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 0];
 
 async function eliminations(fpl) {
   var gw = await fpl.init(1000);
@@ -32,22 +32,20 @@ async function eliminations(fpl) {
 
 async function getPlayersDetails(fpl, gw) {
   let players = [];
-  var info = await ssService.getInfo(RUMBLE_SHEET_ID);
-  var sheet = info.worksheets[3];
-  var cells = await ssService.getCellsLimited(sheet, 200, 8);
+  var sheet = await ssService.getSheet(RUMBLE_SHEET_ID, 'Lives', 203, 9);
   var liveScores = fpl.isGwOngoing() ? scoreService.getLivePoints(fpl, gw) : null;
   for (var rowNum = 3; ; rowNum++) {
-    var status = ssService.getCell(cells, rowNum, 7, 8).value;
+    var status = ssService.getValue(sheet, rowNum, 7);
     if (status === '') {
       break;
     }
     if (status != 'Active') {
       continue;
     }
-    var pName = ssService.getCell(cells, rowNum, 4, 8).value;
-    var fplId = ssService.getCell(cells, rowNum, 6, 8).value;
+    var pName = ssService.getValue(sheet, rowNum, 4);
+    var fplId = ssService.getValue(sheet, rowNum, 6);
     var playerData = await fplTeam.getPlayerData(fpl, fplId, gw, liveScores);
-    var lives = ssService.getCell(cells, rowNum, 8, 8).value;
+    var lives = ssService.getValue(sheet, rowNum, 9);
     var playerDetail = { name: pName, score: playerData.score, status: status, lives: lives };
     players.push(playerDetail);
   }

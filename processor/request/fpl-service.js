@@ -1,6 +1,6 @@
 const request = require('request');
 
-const sameLastName = ['Baptiste', 'Barnes', 'Bernardo', 'Chalobah', 'Cresswell', 'Davies', 'Fernández', 'Gray', 'Greenwood', 'Henderson', 'Hernández', 'James', 'Long', 'Mendy', 'Pereira', 'Phillips', 'Ramsey', 'Roberts', 'Rodrigo', 'Sarr', 'Stephens', 'Sánchez', 'Sørensen', 'Thomas', 'Traoré', 'Ward'];
+const sameLastName = ['Baptiste', 'Barnes', 'Bernardo', 'Chalobah', 'Cresswell', 'Davies', 'Fernández', 'Gray', 'Greenwood', 'Henderson', 'Hernández', 'James', 'Long', 'Mendy', 'Pereira', 'Phillips', 'Ramsey', 'Roberts', 'Rodrigo', 'Sarr', 'Stephens', 'Sánchez', 'Sørensen', 'Thomas', 'Traoré', 'Ward', 'White'];
 
 const simpleNameMap = {
   'Fernandes': 'Bruno',
@@ -8,7 +8,8 @@ const simpleNameMap = {
   'Calvert-Lewin': 'Dcl',
   'Walker-Peters': 'Kwp',
   'R Barbosa Pereira': 'Barbosa',
-  'De Bruyne': 'Kdb'
+  'De Bruyne': 'Kdb',
+  'B Veiga de Carvalho e Silva': 'Bilva'
 };
 
 class FplService {

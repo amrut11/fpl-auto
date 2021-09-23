@@ -13,7 +13,7 @@ const dateFormat = require('dateformat');
 
 const PRICE_CHANGE_PREFIX = 'player-price-';
 
-const SIGNATURE = '\n\nFollow *FPL Alerts* for more updates: http://tiny.cc/FplAlerts';
+const SIGNATURE = '\n\nFollow *FPL Alerts* for more updates: https://t.me/fplalerts';
 
 async function checkChanges() {
   try {

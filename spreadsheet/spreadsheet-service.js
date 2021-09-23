@@ -35,9 +35,9 @@ function getValue(sheet, row, col) {
   return value;
 }
 
-async function updateValue(input, tabIndex, row, col, value) {
+async function updateValue(input, tab, row, col, value) {
   var doc = typeof input === 'string' ? await getDoc(input) : input;
-  var sheet = doc.sheetsByIndex[tabIndex];
+  var sheet = typeof tab === 'string' ? doc.sheetsByTitle[tab] : doc.sheetsByIndex[tab];
   await loadCells(sheet, row, col);
   var cell = sheet.getCell(row - 1, col - 1);
   cell.value = value;

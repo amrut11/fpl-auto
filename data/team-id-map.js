@@ -18,6 +18,7 @@ tgMap[1096370881] = 'Rishabh';
 tgMap[676680881] = 'Tasu';
 tgMap[1385709957] = 'Vineet';
 tgMap[-413814520] = 'TG OC';
+tgMap[-456947877] = 'Noms Group';
 
 const misc = { 'gcl': 415 };
 

@@ -7,7 +7,7 @@ const FPL_CHANNEL_ID = process.env.fplChannelId;
 
 const fpl = new fplService();
 
-const SIGNATURE = '\n\nFollow *FPL Alerts* for more updates: http://tiny.cc/FplAlerts';
+const SIGNATURE = '\n\nFollow *FPL Alerts* for more updates: https://t.me/fplalerts';
 
 async function sendAlert() {
   try {

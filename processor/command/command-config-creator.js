@@ -5,7 +5,6 @@ const tournMap = require('../../data/enums').TOURN_MAP;
 const matchConfigMap = require('../../data/enums').MATCH_CONFIG_MAP;
 
 const TOURNAMENTS = ['FFC', 'Hustle', 'Haven', 'FFFL'];
-// const TOURNAMENTS = ['FFC', 'FFC-UCL', 'Hustle', 'Haven'];
 
 async function createConfig(command, input) {
   let configs = [];
@@ -53,8 +52,7 @@ async function createConfig(command, input) {
       await addScoringConfig(configs, 'Haven', 'Haven-Individual');
       await addScoringConfig(configs, 'Haven', 'Haven-H2H');
       await addScoringConfig(configs, 'Haven', 'Haven-Ownership-Top10');
-      
-      //await addDiffConfig(configs, 'Haven', 'Haven-CL');
+      // await addDiffConfig(configs, 'Haven', 'Haven-CL');
       break;
     case BotCommands.LEAGUE_DIFFS.command:
       await addDiffConfig(configs, 'Haven', 'Haven-H2H');
@@ -63,7 +61,7 @@ async function createConfig(command, input) {
       // await addScoringConfig(configs, 'FFC', 'FFC-H2H');
       await addScoringConfig(configs, 'FFFL', 'FFFL-H2H');
       await addScoringConfig(configs, 'Hustle', 'Hustle-H2H');
-      // configs.push(createCustomUpdateConfig('HUSTLE RUMBLE', 'Hustle-Rumble'));
+      configs.push(createCustomUpdateConfig('HUSTLE RUMBLE', 'Hustle-Rumble'));
       break;
     case BotCommands.PERSONAL_SLOW.command:
       // await addScoringConfig(configs, 'FFC', 'FFC-Individual');
