@@ -131,7 +131,7 @@ const LEAGUES = Object.freeze({
     'fixture-count': 12,
     'chip-col-index': 3,
     'no-of-managers': 192,
-    'diff-teams': ['BOU', 'WHU']
+    'diff-teams': ['BOU', 'WHU', 'BHA']
   },
   HAVEN: {
     'name': 'Haven',

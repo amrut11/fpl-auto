@@ -1,8 +1,6 @@
 const fplService = require('../request/fpl-service');
 const players = require('../../data/tournament/haven/players').allPlayers;
 
-const ssService = require('../../spreadsheet/spreadsheet-service')
-
 const fpl = new fplService();
 
 async function getHistory() {

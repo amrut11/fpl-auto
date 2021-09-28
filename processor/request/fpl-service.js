@@ -9,7 +9,8 @@ const simpleNameMap = {
   'Walker-Peters': 'Kwp',
   'R Barbosa Pereira': 'Barbosa',
   'De Bruyne': 'Kdb',
-  'B Veiga de Carvalho e Silva': 'Bilva'
+  'B Veiga de Carvalho e Silva': 'Bilva',
+  'Saint-Maximin': 'Asm'
 };
 
 class FplService {

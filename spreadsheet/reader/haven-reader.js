@@ -24,6 +24,11 @@ async function getScores(fpl) {
   var msg = await getLeagueScores(gw, doc, HLL);
   msg += ':::';
   msg += await getLeagueScores(gw, doc, HPL);
+  if (gw >=8 && gw <= 16) {
+    msg += await getCupScores(gw, doc, 3);
+    msg += ':::';
+    msg += await getCupScores(gw, doc, 17);
+  }
   // msg += await getFaCupScores(info);
   // msg += await getHclScores(gw, info);
   var hmtRow = HMT_ROW_MAP[gw];
@@ -83,6 +88,21 @@ function getBonusScores(sheet, gw, bonusRow) {
     output += '\n*' + score[0] + '* - ' + score[1];
   }
   return output;
+}
+
+async function getCupScores(gw, doc, colIndex) {
+  var sheet = await ssService.getSheetFromDoc(doc, 'Cups');
+  var startRow = 2 + (gw -8)*13;
+  var msg = '*' + ssService.getValue(sheet, startRow, colIndex-1) + '*';
+  for (var i =2;i<12;i++) {
+    var score = ssService.getValue(sheet, startRow + i, colIndex+9);
+    if (score == 'ELIM') {
+      break;
+    }
+    var teamName = ssService.getValue(sheet, startRow + i , colIndex);
+    msg += '\n*' + teamName +'* - ' + score;
+  }
+  return msg;
 }
 
 async function getFaCupScores(info) {

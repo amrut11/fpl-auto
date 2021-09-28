@@ -16,7 +16,7 @@ const ipl = require('./alerts/ipl-alert-service');
 const vaccine = require('./alerts/vaccine-alert-service');
 const priceChange = require('./alerts/price-change-service');
 
-const havenHistory = require('./processor/history/haven-history');
+const havenHistory = require('./processor/data/haven-history');
 
 const express = require('express');
 const ejs = require('ejs');

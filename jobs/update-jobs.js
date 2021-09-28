@@ -8,6 +8,7 @@ var updateJob = new CronJob(UPDATE_FDR_CRON, async function() {
   await fplDataWriter.updateFixtures();
   await fplDataWriter.updatePlayers();
   await fplDataWriter.updateResults();
+  await fplDataWriter.updatePlayerData();
   await plannerTeamsWriter.updateTeams();
 }, null, false, 'Asia/Kolkata');
 

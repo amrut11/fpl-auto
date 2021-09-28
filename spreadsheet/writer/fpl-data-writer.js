@@ -101,8 +101,21 @@ function createFixMsg(teams) {
   return msg;
 }
 
+async function updatePlayerData() {
+  console.log('Updating Fixtures with latest players and positions');
+  await fpl.init(1000);
+  var elements = fpl.getElements();
+  var msg = '';
+  for (var i in elements) {
+    var name = fpl.getPlayerName(elements[i].id);
+    var type = fpl.getPlayerPosition(elements[i].element_type);
+    msg += name + '%' + type + '$';
+  }
+  ssService.updateValue(process.env.H2H_FIXTURE_SHEET_ID, 'PlayerData', 1, 8, msg);
+}
+
 async function updateSheet(value, column) {
   await ssService.updateValue(FDR_SHEET_ID, TAB_INDEX, 2, column, value);
 }
 
-module.exports = { updateResults, updatePlayers, updateFixtures }
+module.exports = { updateResults, updatePlayers, updateFixtures, updatePlayerData }
