@@ -1,4 +1,4 @@
-var dateFormat = require('dateformat');
+const dateFormat = require('dateformat');
 
 const DATE_FORMAT = 'd mmm HH:MM';
 const DATE_FORMAT_SECONDS = 'd mmm HH:MM:ss';

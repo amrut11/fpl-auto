@@ -22,4 +22,20 @@ async function getHistory() {
   return msg;
 }
 
-module.exports = { getHistory }
+async function getCountry() {
+  await fpl.init(1000);
+  var msg = '';
+  for (var i in players) {
+    var playerId = players[i];
+    console.dir(i + ': ' + playerId);
+    var url = 'https://fantasy.premierleague.com/api/entry/' + playerId + '/';
+    var data = await fpl.downloadPage(url);
+    var region = data.player_region_name;
+    var favTeam = fpl.getTeamName(data.favourite_team);
+    msg += i + ':' + region + ':' + favTeam + '$';
+  }
+  console.dir(msg);
+  return msg;
+}
+
+module.exports = { getHistory, getCountry }

@@ -5,14 +5,15 @@ const diffFinder = require('./diff/diff-finder');
 const ownershipProcessor = require('./sheet/ownership-processor');
 
 const freeAgents = require('../data/tournament/haven/players').freeAgents;
+const ffcCupPlayers = require('../data/tournament/ffc/players').cupPlayers;
 
 const SCORE_SHEET_ID = process.env.HAVEN_SCORE_SHEET_ID;
 const CAP_SHEET_ID = process.env.H2H_FIXTURE_SHEET_ID;
 const CUP_SHEET_ID = process.env.HAVEN_CUP_SHEET_ID;
+const FFC_CUP_SHEET_ID = process.env.FFC_CUP_SHEET_ID;
 
 const SCORE_TAB_INDEX = 21;
 const CAP_TAB_INDEX = 14;
-const FA_TAB_INDEX = 4;
 
 const ROW_NUM = 1;
 
@@ -64,8 +65,13 @@ async function calculateLeague(fpl, updateConfig, leagueConfig) {
   }
   if (leagueConfig.league['free-agent-scores']) {
     console.log('Updating free agent scores');
-    var faScores = await getFaScores(fpl, gw, liveScores);
-    await ssService.updateValue(CUP_SHEET_ID, FA_TAB_INDEX, 2, gw - 23, faScores);
+    var faScores = await getCustomScores(fpl, gw, liveScores, freeAgents);
+    await ssService.updateValue(CUP_SHEET_ID, 'HMT-FA', 2, gw - 18, faScores);
+  }
+  if (leagueConfig.league['cup-scores']) {
+    console.log('Updating FFC Cup scores');
+    var cupScores = await getCustomScores(fpl, gw, liveScores, ffcCupPlayers);
+    await ssService.updateValue(FFC_CUP_SHEET_ID, 'Raw-Scores', 2, gw - 20, cupScores);
   }
   switch (leagueConfig['score-type']) {
     case 'H2H':
@@ -82,10 +88,10 @@ async function calculateLeague(fpl, updateConfig, leagueConfig) {
   }
 }
 
-async function getFaScores(fpl, gw, liveScores) {
+async function getCustomScores(fpl, gw, liveScores, customList) {
   var scores = '';
-  for (var i in freeAgents) {
-    var playerData = await getPlayerData(fpl, freeAgents[i], gw, liveScores);
+  for (var i in customList) {
+    var playerData = await getPlayerData(fpl, customList[i], gw, liveScores);
     scores += playerData.score + ',';
   }
   return scores;
@@ -127,15 +133,13 @@ function getTeam(teams, nameToFind) {
 }
 
 async function updateTeamScores(fpl, liveScores, h2hTeam, gw, subMultiplier) {
-  var team = h2hTeam.team;
-  var chip = h2hTeam.chip;
-  var players = team.players;
+  var players = h2hTeam.team.players;
   var playerNames = Object.keys(players);
   let scores = [];
   let h2hScores = [];
   let pScores = [];
   let pCaps = [];
-  var message = '*' + team.teamName + '*\n';
+  var message = '*' + h2hTeam.team.teamName + '*\n';
   var playerMap = new Object();
   var ownershipMap = new Object();
   var topScore = -100;
@@ -143,8 +147,7 @@ async function updateTeamScores(fpl, liveScores, h2hTeam, gw, subMultiplier) {
     var playerName = playerNames[i];
     var pCap = new Object();
     pCap.name = playerName;
-    var playerId = players[playerName];
-    var playerData = await getPlayerData(fpl, playerId, gw, liveScores);
+    var playerData = await getPlayerData(fpl, players[playerName], gw, liveScores);
     var playerScore = playerData.score;
     var pScore = new Object();
     pScore.name = playerName;
@@ -155,6 +158,7 @@ async function updateTeamScores(fpl, liveScores, h2hTeam, gw, subMultiplier) {
     var multiplier = 1;
     if (playerName == h2hTeam.cap) {
       h2hScores.push(playerScore);
+      var chip = h2hTeam.chip;
       if (chip == 'TC') {
         playerName += ' (TC)';
         h2hScores.push(playerScore);
@@ -200,15 +204,7 @@ async function updateTeamScores(fpl, liveScores, h2hTeam, gw, subMultiplier) {
   var teamScore = scores.reduce((a, b) => a + b);
   var h2hTeamScore = h2hScores.reduce((a, b) => a + b);
   message += '*\nH2H (Raw) scores: ' + h2hTeamScore + ' (' + teamScore + ')*';
-  var teamScores = new Object();
-  teamScores.message = message;
-  teamScores.pScores = pScores;
-  teamScores.pCaps = pCaps;
-  teamScores.h2hScore = h2hTeamScore;
-  teamScores.players = playerMap;
-  teamScores.topScore = topScore;
-  teamScores.ownership = ownershipMap;
-  return teamScores;
+  return { message: message, pScores: pScores, pCaps: pCaps, h2hScore: h2hTeamScore, players: playerMap, topScore: topScore, ownership: ownershipMap };
 }
 
 async function getPlayerData(fpl, playerId, gw, liveScores) {
@@ -232,7 +228,7 @@ async function getPlayerData(fpl, playerId, gw, liveScores) {
 
 function getHomeScore(homeScores, tournName) {
   var score = homeScores.h2hScore;
-  if (tournName == 'FFC') {
+  if (tournName == 'FFC' || tournName == 'FFC-2') {
     score = score + Math.round(homeScores.topScore * 0.25);
   } else if (tournName == 'Haven') {
     score = Math.round(score * 1.01);

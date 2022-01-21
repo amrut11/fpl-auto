@@ -1,3 +1,5 @@
+const teamCache = new Object();
+
 const ANY = 0;
 const GKP = 1;
 const DEF = 2;
@@ -17,12 +19,20 @@ async function getPlayerData(fpl, playerId, gw, liveScores) {
   } else {
     playerScore = history.points;
   }
-  return {picks: picks, score: (playerScore - history.event_transfers_cost)};
+  return { picks: picks, score: (playerScore - history.event_transfers_cost) };
 }
 
 async function getTeam(fpl, playerId, gw) {
+  var key = playerId + '-' + fpl.isGwOngoing() + '-' + fpl.getRemainingFixsCount();
+  if (key in teamCache) {
+    return teamCache[key];
+  }
   var url = 'https://fantasy.premierleague.com/api/entry/' + playerId + '/event/' + gw + '/picks/';
   var data = await fpl.downloadPage(url);
+  // if (data.active_chip === 'freehit' && !fpl.isGwOngoing()) {
+  //   url = 'https://fantasy.premierleague.com/api/entry/' + playerId + '/event/' + (gw - 1) + '/picks/';
+  //   data = await fpl.downloadPage(url);
+  // }
   var playerFixtures = fpl.getPlayerFixtures();
   var liveElements = fpl.liveInfo.elements;
   var details = getDetails(data, playerFixtures, liveElements, fpl);
@@ -58,6 +68,7 @@ async function getTeam(fpl, playerId, gw) {
       }
     }
   }
+  teamCache[key] = data;
   return data;
 }
 

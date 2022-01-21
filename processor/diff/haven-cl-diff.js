@@ -3,37 +3,39 @@ const fplTeam = require('../request/fpl-team');
 const diffFinder = require('../diff/diff-finder');
 const sorter = require('../../utils/sorter');
 
-const LEAGUE_A = ['ARSENAL', 'CHELSEA', 'EVERTON', 'LEEDS', 'LEICESTER'];
-const LEAGUE_B = ['LIVERPOOL', 'MAN CITY', 'MAN UTD', 'SPURS', 'WOLVES'];
+const LEAGUE_MAP = {
+  'Atletico': 'B', 'Barca': 'B', 'Betis': 'A', 'Bilbao': 'D', 'Celta': 'B', 'R Madrid': 'C', 'Sevilla': 'A', 'Sociedad': 'D', 'Valencia': 'C', 'Villarreal': 'D', 'Arsenal': 'A', 'Chelsea': 'C', 'Everton': 'D', 'Leeds': 'A', 'Leicester': 'C', 'Liverpool': 'B', 'Man City': 'A', 'Man Utd': 'B', 'Spurs': 'C', 'Wolves': 'D'
+}
 
 async function getDiffs(fpl, updateConfig, leagueConfig) {
   var gw = await fpl.init(1000);
   var teams = updateConfig.matchConfig.teams;
   var fixtures = await createFixtures(teams, gw, leagueConfig);
-  var avgA = new Object(), avgB = new Object();
+  var avg = new Object();
   var teamPlayersMap = new Object();
   var diffs = '';
   for (var i in fixtures) {
     var fixture = fixtures[i];
-    teamPlayersMap[fixture.home.team.teamName] = await getTeamPlayers(fpl, fixture.home, gw, avgA, avgB);
-    teamPlayersMap[fixture.away.team.teamName] = await getTeamPlayers(fpl, fixture.away, gw, avgA, avgB);
+    teamPlayersMap[fixture.home.team.teamName] = await getTeamPlayers(fpl, fixture.home, gw, avg);
+    teamPlayersMap[fixture.away.team.teamName] = await getTeamPlayers(fpl, fixture.away, gw, avg);
   }
-  teamPlayersMap['Avg A'] = avgA;
-  teamPlayersMap['Avg B'] = avgB;
+  teamPlayersMap['Avg A'] = avg['avgA'];
+  teamPlayersMap['Avg B'] = avg['avgB'];
+  teamPlayersMap['Avg C'] = avg['avgC'];
+  teamPlayersMap['Avg D'] = avg['avgD'];
   diffs += addDiffs(fpl, fixtures, teamPlayersMap);
   return diffs;
 }
 
 async function createFixtures(teams, gw, leagueConfig) {
-  var sheetInfo = await ssService.getInfo(leagueConfig.league['sheet-id']);
-  var cells = await ssService.getCells(sheetInfo.worksheets[gw - 14]);
-  var teamDetails = createTeamDetails(cells);
+  var sheet = await ssService.getSheet(leagueConfig.league['sheet-id'], 'CL-R' + (gw - 20), 75, 24);
+  var teamDetails = createTeamDetails(sheet);
   var fixtureCount = leagueConfig.league['fixture-count'];
   let fixtures = [];
-  for (var i = 0; i < fixtureCount + 1; i++) {
+  for (var i = 0; i < fixtureCount + 3; i++) {
     var fixture = new Object();
 
-    homeTeamName = ssService.getCell(cells, i + 35, 7, 25).value;
+    homeTeamName = ssService.getValue(sheet, i + 61, 7);
     if (homeTeamName == '') {
       continue;
     }
@@ -46,7 +48,7 @@ async function createFixtures(teams, gw, leagueConfig) {
       fixture.home.bench = teamDetails[homeTeamName].bench;
     }
 
-    awayTeamName = ssService.getCell(cells, i + 35, 11, 25).value;
+    awayTeamName = ssService.getValue(sheet, i + 61, 11);
     fixture.away = new Object();
     fixture.away.team = getTeam(teams, awayTeamName);
     if (awayTeamName.includes('Avg')) {
@@ -60,18 +62,18 @@ async function createFixtures(teams, gw, leagueConfig) {
   return fixtures;
 }
 
-function createTeamDetails(cells) {
+function createTeamDetails(sheet) {
   var teamDetails = new Object();
-  for (var i = 0; i < 2; i++) {
+  for (var i = 0; i < 4; i++) {
     for (var j = 0; j < 5; j++) {
       var teamDetail = new Object();
       var bench = '', chip = penalty = false, scores = new Object();
       var row = 4 + i * 13;
-      var teamName = ssService.getCell(cells, row, 1 + j * 5, 25).value;
+      var teamName = ssService.getValue(sheet, row, 1 + j * 5);
       for (var k = row; k < row + 10; k++) {
-        var pName = ssService.getCell(cells, k, 2 + j * 5, 25).value;
-        var nomination = ssService.getCell(cells, k, 3 + j * 5, 25).value;
-        scores[pName] = ssService.getCell(cells, k, 4 + j * 5, 25).value;
+        var pName = ssService.getValue(sheet, k, 2 + j * 5);
+        var nomination = ssService.getValue(sheet, k, 3 + j * 5);
+        scores[pName] = ssService.getValue(sheet, k, 4 + j * 5);
         if (nomination == 'B') {
           bench += pName + ',';
         } else if (nomination == 'SP') {
@@ -99,7 +101,7 @@ function createTeamDetails(cells) {
 function getTeam(teams, nameToFind) {
   for (var teamName in teams) {
     var team = teams[teamName];
-    if (team.teamName == nameToFind.toUpperCase()) {
+    if (team.teamName == nameToFind) {
       return team;
     }
   }
@@ -118,7 +120,7 @@ function addDiffs(fpl, fixtures, teamPlayersMap) {
   return diffs;
 }
 
-async function getTeamPlayers(fpl, h2hTeam, gw, avgA, avgB) {
+async function getTeamPlayers(fpl, h2hTeam, gw, avg) {
   var team = h2hTeam.team;
   if (team.teamName.includes('Avg')) {
     return;
@@ -137,11 +139,11 @@ async function getTeamPlayers(fpl, h2hTeam, gw, avgA, avgB) {
     }
     diffFinder.populatePlayers(playerMap, pTeam.picks, multiplier, fpl.getPlayerFixtures(), !fpl.isGwOngoing());
   }
-    if (LEAGUE_A.includes(team.teamName)) {
-      addAverage(avgA, playerMap);
-    } else {
-      addAverage(avgB, playerMap);
-    }
+  var avgGroup = 'avg' + LEAGUE_MAP[team.teamName];
+  if (!avg[avgGroup]) {
+    avg[avgGroup] = new Object();
+  }
+  addAverage(avg[avgGroup], playerMap);
   return playerMap;
 }
 

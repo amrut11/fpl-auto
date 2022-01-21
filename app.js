@@ -12,7 +12,6 @@ const hmtRanks = require('./processor/request/hmt-ranks');
 const fplDataWriter = require('./spreadsheet/writer/fpl-data-writer');
 const plannerTeamsWriter = require('./spreadsheet/writer/planner-teams-writer');
 
-const ipl = require('./alerts/ipl-alert-service');
 const vaccine = require('./alerts/vaccine-alert-service');
 const priceChange = require('./alerts/price-change-service');
 
@@ -85,23 +84,22 @@ app.get('/raw', async function(req, res) {
 });
 
 app.get('/fdr', async function(req, res) {
+  await fplDataWriter.updateFixtures();
   await fplDataWriter.updatePlayers();
+  await fplDataWriter.updateResults();
+  await fplDataWriter.updatePlayerData();
   await plannerTeamsWriter.updateTeams();
   res.render('index');
 });
 
 app.get('/haven-history', async function(req, res) {
-  var response = await havenHistory.getHistory();
+  // var response = await havenHistory.getHistory();
+  var response = await havenHistory.getCountry();
   res.render('index', { message: response });
 });
 
 app.get('/price-change', async function(req, res) {
   await priceChange.checkChanges();
-  res.render('index');
-});
-
-app.get('/ipl', async function(req, res) {
-  await ipl.alert();
   res.render('index');
 });
 

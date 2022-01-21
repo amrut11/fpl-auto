@@ -1,6 +1,6 @@
 const request = require('request');
 
-const sameLastName = ['Baptiste', 'Barnes', 'Bernardo', 'Chalobah', 'Cresswell', 'Davies', 'Fernández', 'Gray', 'Greenwood', 'Henderson', 'Hernández', 'James', 'Long', 'Mendy', 'Pereira', 'Phillips', 'Ramsey', 'Roberts', 'Rodrigo', 'Sarr', 'Stephens', 'Sánchez', 'Sørensen', 'Thomas', 'Traoré', 'Ward', 'White'];
+const sameLastName = ['Baptiste', 'Barnes', 'Bernardo', 'Chalobah', 'Cresswell', 'Davies', 'Diallo', 'Ferguson', 'Fernández', 'Gordon', 'Gray', 'Greenwood', 'Henderson', 'Hernández', 'James', 'Jones', 'Lewis', 'Long', 'Mendy', 'Nelson', 'Pereira', 'Phillips', 'Ramsey', 'Roberts', 'Rodrigo', 'Sarr', 'Stephens', 'Sánchez', 'Sørensen', 'Thomas', 'Traoré', 'Ward', 'White'];
 
 const simpleNameMap = {
   'Fernandes': 'Bruno',
@@ -12,6 +12,11 @@ const simpleNameMap = {
   'B Veiga de Carvalho e Silva': 'Bilva',
   'Saint-Maximin': 'Asm'
 };
+
+const sameName = {
+  248: 'Davies LIV',
+  364: 'Davies TOT'
+}
 
 class FplService {
 
@@ -69,6 +74,9 @@ class FplService {
       var pName = sameLastName.includes(webName) ? element.first_name.charAt(0) + ' ' + element.second_name : webName;
       if (simpleNameMap[pName]) {
         pName = simpleNameMap[pName];
+      }
+      if (sameName[element.id]) {
+        pName = sameName[element.id];
       }
       pName = pName.replace(/'/g, '');
       this.playerIdNameMap[element.id] = pName;
@@ -154,8 +162,7 @@ class FplService {
 
   getLatestCompletedMatchTime() {
     var fixtures = this.liveInfo.fixtures;
-    var now = new Date();
-    var latestMatchTime = now;
+    var latestMatchTime = new Date();
     var length = fixtures.length;
     for (var i = length - 1; i > 0; i--) {
       var fixture = fixtures[i];
@@ -169,10 +176,8 @@ class FplService {
 
   getNextMatchTime() {
     var fixtures = this.liveInfo.fixtures;
-    var now = new Date();
-    var firstMatchTime = now;
-    var length = fixtures.length;
-    for (var i = 0; i < length; i++) {
+    var firstMatchTime = new Date();
+    for (var i = 0; i < fixtures.length; i++) {
       var fixture = fixtures[i];
       if (!fixture.finished && fixture.kickoff_time != null) {
         firstMatchTime = fixture.kickoff_time;
@@ -190,6 +195,18 @@ class FplService {
       }
     }
     return 0;
+  }
+
+  getRemainingFixsCount(gw) {
+    var count = 0;
+    var fixtures = this.liveInfo.fixtures;
+    for (var i in fixtures) {
+      var fixture = fixtures[i];
+      if (fixture.event == gw && !fixture.finished) {
+        count++
+      }
+    }
+    return count;
   }
 
   getCurrentGw() {

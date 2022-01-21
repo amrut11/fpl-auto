@@ -94,7 +94,7 @@ async function findAlerts(allAlerts) {
       if (fpl.isAnyLiveMatch()) {
         if (alert['is-live']) {
           var liveUpdate = await db.get('live-update');
-          if (alert.command == 'get_live_score' || alert.command == 'league_h2h') {
+          if (alert.command == 'get_live_score' || alert.command == 'league_h2h' || alert.command == 'personal_fast') {
             if ((liveUpdate - alert['last-processed']) > 0) {
               alerts.push(alert);
             }

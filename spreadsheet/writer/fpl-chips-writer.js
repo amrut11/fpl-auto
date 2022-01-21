@@ -47,6 +47,7 @@ function getPlayerChip(playerData) {
   var pChip = findChip(chips, 'wildcard', 1);
   pChip += ':' + findChip(chips, 'wildcard', 2);
   pChip += ':' + findChip(chips, 'freehit', 1);
+  pChip += ':' + findChip(chips, 'freehit', 2);
   pChip += ':' + findChip(chips, '3xc', 1);
   pChip += ':' + findChip(chips, 'bboost', 1);
   return pChip;

@@ -19,7 +19,7 @@ const betis = {
 };
 
 const everton = {
-  'Rishi': 92249, 'Dhruv M': 579572, 'Geordie': 8361, 'Ninad': 887959, 'R Parekh': 47007, 'Kaustubh': 25767, 'Daksha': 200668, 'Abhiyank': 107345, 'Vedant': 3208, 'Sathish': 78620
+  'Rishi': 92249, 'Dhruv M': 579572, 'Geordie': 8361, 'Ninad': 887959, 'Nidhin': 163818, 'Kaustubh': 25767, 'Daksha': 200668, 'Abhiyank': 107345, 'Vedant': 3208, 'Sathish': 78620
 };
 
 const bilbao = {
@@ -31,7 +31,7 @@ const leeds = {
 };
 
 const celta = {
-  'Sautik': 512352, 'Shrutarshi': 18484, 'Shivamshu': 951871, 'Christo': 67391, 'Karthik MG': 27158, 'Arnab': 18849, 'Ravi': 933687, 'Arunjyoti': 951715, 'Rahul J': 953312, 'Swapnil': 826562
+  'Sautik': 512352, 'Shrutarshi': 18484, 'Shivamshu': 951871, 'Christo': 67391, 'Karthik MG': 27158, 'Gerardo': 153545, 'Ravi': 933687, 'Arunjyoti': 951715, 'Viktor': 252095, 'Swapnil': 826562
 };
 
 const leicester = {
@@ -51,7 +51,7 @@ const sevilla = {
 };
 
 const mancity = {
-  'Tanveer': 1518, 'Sahil': 3380, 'Gaurang': 67150, 'Amrut': 4807, 'Saleem': 590444, 'Srijan': 928594, 'Shashank': 878138, 'Avi Tarun': 8705, 'Brynal': 5221, 'Sushant': 4748
+  'Tanveer': 1518, 'Sahil': 3380, 'Gaurang': 67150, 'Amrut': 4807, 'Saleem': 590444, 'Damodar': 1485012, 'Shashank': 878138, 'Avi Tarun': 8705, 'Brynal': 5221, 'Sushant': 4748
 };
 
 const sociedad = {
@@ -78,7 +78,11 @@ const wolves = {
   'Tanmay': 6295, 'Anson': 880321, 'Param': 886304, 'Daksh': 198782, 'Sidharth': 12217, 'Aniket V': 880134, 'Falak': 9516, 'Darshil': 877694, 'Saswat': 881918, 'Biswojit': 660260
 };
 
-const allPlayers = Object.assign({}, atletico, barca, betis, bilbao, celta, rmadrid, sevilla, sociedad, valencia, villarreal, arsenal, chelsea, everton, leeds, leicester, liverpool, mancity, manutd, spurs, wolves);
+const freeAgents = {
+  'Mohit': 244171, 'Mihir V': 18681, 'Sandipan': 679300, 'Suraj': 26540, 'Gagan': 6486408, 'Pulkit': 91937, 'Himanshu': 378795, 'Arnab C': 952335, 'Raunak': 81388, 'Baibhav': 519832, 'Arnab R': 958125, 'Prem': 970146, 'Viktor': 252095, 'Damodar': 1485012
+}
+
+const allPlayers = Object.assign({}, atletico, barca, betis, bilbao, celta, rmadrid, sevilla, sociedad, valencia, villarreal, arsenal, chelsea, everton, leeds, leicester, liverpool, mancity, manutd, spurs, wolves, freeAgents);
 
 module.exports = {
   atleticoPlayers: atletico,
@@ -101,5 +105,6 @@ module.exports = {
   manutdPlayers: manutd,
   spursPlayers: spurs,
   wolvesPlayers: wolves,
+  freeAgents: freeAgents,
   allPlayers
 }

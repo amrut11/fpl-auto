@@ -6,15 +6,14 @@ const matchCreator = require('./sheet/match-creator');
 const fullLeague = require('./full-league');
 const havenClDiff = require('./diff/haven-cl-diff');
 const liveMatches = require('./live/live-matches');
-const liveIpl = require('./live/live-ipl');
 const vaccine = require('./live/vaccine');
 
 const bonusReader = require('../spreadsheet/reader/bonus-reader');
 const tournDataReader = require('../spreadsheet/reader/tourn-data-reader');
 const havenScoreReader = require('../spreadsheet/reader/haven-reader');
+const ffcReader = require('../spreadsheet/reader/ffc-reader');
 const nomsReader = require('../spreadsheet/reader/noms-reader');
 const hustleRumble = require('./scoring/hustle-rumble');
-const ipl = require('../spreadsheet/reader/ipl-reader');
 
 const liveScoreUpdater = require('../spreadsheet/writer/live-score-updater');
 const gwTeamWriter = require('../spreadsheet/writer/gw-team-writer');
@@ -22,7 +21,6 @@ const chipWriter = require('../spreadsheet/writer/fpl-chips-writer');
 const havenNom = require('../spreadsheet/writer/haven-nom');
 const hustleNom = require('../spreadsheet/writer/hustle-nom');
 const ffflNom = require('../spreadsheet/writer/fffl-nom');
-const iplWriter = require('../spreadsheet/writer/ipl-score-writer');
 
 const dbService = require('../db/alert-db-service');
 const LEAGUE_CONFIGS = require('../data/enums').LEAGUE_CONFIGS;
@@ -63,6 +61,9 @@ async function readDetails(fpl, updateConfig) {
   if (findDiffs === 'Read') {
     console.log('Reading diffs');
     return await tournDataReader.readDiffs(sheetConfig.info.sheetsByIndex[3]);
+  } else if (findDiffs === 'FFC-H2H') {
+    console.log('Fetching H2H diffs for FFC');
+    return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.FFC_DIFFS);
   } else if (findDiffs === 'Hustle-H2H') {
     console.log('Fetching H2H diffs for Hustle league');
     return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.HUSTLE_DIFFS);
@@ -87,6 +88,9 @@ async function readDetails(fpl, updateConfig) {
   } else if (calculateScores === 'FFC-Individual') {
     console.log('Fetching Individual scores for FFC league');
     return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.FFC_INDIVIDUAL);
+  } else if (calculateScores === 'FFC2-Individual') {
+    console.log('Fetching Individual scores for FFC-2 league');
+    return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.FFC2_INDIVIDUAL);
   } else if (calculateScores === 'Hustle-Individual') {
     console.log('Fetching Individual scores for Hustle league');
     return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.HUSTLE_INDIVIDUAL);
@@ -99,6 +103,9 @@ async function readDetails(fpl, updateConfig) {
   } else if (calculateScores === 'FFC-H2H') {
     console.log('Fetching H2H scores for FFC league');
     return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.FFC_H2H);
+  } else if (calculateScores === 'FFC2-H2H') {
+    console.log('Fetching H2H scores for FFC-2 league');
+    return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.FFC2_H2H);
   } else if (calculateScores === 'Hustle-H2H') {
     console.log('Fetching H2H scores for Hustle league');
     return await fullLeague.calculateLeague(fpl, updateConfig, LEAGUE_CONFIGS.HUSTLE_H2H);
@@ -141,6 +148,9 @@ async function readDetails(fpl, updateConfig) {
   } else if (calculateScores === 'Haven-Overall') {
     console.log('Fetching Overall scores for Haven league');
     return await havenScoreReader.getScores(fpl);
+  } else if (calculateScores === 'FFC-Cups') {
+    console.log('Fetching Cup scores for FFC');
+    return await ffcReader.getScores(fpl);
   } else if (calculateScores === 'LiveMatch') {
     console.log('Fetching Live Match Details');
     return await liveMatches.getLiveMatches(fpl);
@@ -150,8 +160,8 @@ async function readDetails(fpl, updateConfig) {
   } else if (calculateScores.startsWith('Haven-League-Nomination')) {
     console.log('Updating Haven League Nominations');
     return await havenNom.updateNoms('League');
-  } else if (calculateScores.startsWith('Haven-Cl-Nomination')) {
-    console.log('Updating Haven Cl Nominations');
+  } else if (calculateScores.startsWith('Haven-CL-Nomination')) {
+    console.log('Updating Haven CL Nominations');
     return await havenNom.updateNoms('CL');
   } else if (calculateScores.startsWith('Hustle-Nomination')) {
     var gw = calculateScores.split('::')[1];
@@ -171,16 +181,6 @@ async function readDetails(fpl, updateConfig) {
   } else if (calculateScores.startsWith('TeamScore')) {
     var input = calculateScores.split('::')[1];
     return await managerGwScore.getTeamScore(fpl, input);
-  } else if (calculateScores.startsWith('IPL-Live')) {
-    console.log('Fetching Live IPL Scores');
-    return await liveIpl.getScores();
-  } else if (calculateScores.startsWith('IPL-Score')) {
-    console.log('Fetching IPL H2H Scores');
-    await iplWriter.updateScores();
-    return await ipl.readScores();
-  } else if (calculateScores.startsWith('My-IPL-Score')) {
-    console.log('Fetching My IPL Scores');
-    return await ipl.readMyScores() + ':::' + await ipl.readSubs();
   } else if (calculateScores.startsWith('vaccine')) {
     console.log('Fetching Vaccine details');
     return await vaccine.check();
@@ -233,7 +233,7 @@ async function updateScores(fpl, updateConfig, match, futureGame) {
 }
 
 async function isSendResponse(chatId, updateConfig, response) {
-  if (chatId != process.env.personalChannelId && chatId != process.env.leagueChannelId && chatId != process.env.iplChannelId && chatId != process.env.vaccineChannelId) {
+  if (chatId != process.env.personalChannelId && chatId != process.env.leagueChannelId) {
     return true;
   }
   var lastResponse = await dbService.getAlertResponse(updateConfig.tournament.name, updateConfig.sheetConfig.findDiffs, updateConfig.sheetConfig.calculateScores);

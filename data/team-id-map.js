@@ -1,4 +1,5 @@
 const ffcPlayers = require('./tournament/ffc/players').allPlayers;
+const ffc2Players = require('./tournament/ffc2/players').allPlayers;
 const havenPlayers = require('./tournament/haven/players').allPlayers;
 const hustlePlayers = require('./tournament/hustle/players').allPlayers;
 const ffflPlayers = require('./tournament/fffl/players').allPlayers;
@@ -17,12 +18,13 @@ tgMap[1307886326] = 'Tanveer';
 tgMap[1096370881] = 'Rishabh';
 tgMap[676680881] = 'Tasu';
 tgMap[1385709957] = 'Vineet';
+tgMap[1733016171] = 'Brynal'
 tgMap[-413814520] = 'TG OC';
 tgMap[-456947877] = 'Noms Group';
 
-const misc = { 'gcl': 415 };
+const misc = { 'gcl': 415, 'cup': 7641957, 'hmt': 976543 };
 
-const allPlayers = Object.assign({}, havenPlayers, hustlePlayers, ffcPlayers, ffflPlayers, misc);
+const allPlayers = Object.assign({}, havenPlayers, hustlePlayers, ffcPlayers, ffc2Players, ffflPlayers, misc);
 
 function getTeamId(chatId) {
   return teamIdMap[chatId] ? teamIdMap[chatId] : 333;

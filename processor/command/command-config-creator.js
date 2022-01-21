@@ -10,7 +10,7 @@ async function createConfig(command, input) {
   let configs = [];
   switch (command) {
     case BotCommands.NEW_GW.command:
-      await addCompositeConfig(configs, BotCommands.UPDATE_DETAILS, BotCommands.UPDATE_DIFFS, BotCommands.UPDATE_TEAMS, BotCommands.LEAGUE_CHIPS, BotCommands.LEAGUE_STATS);
+      await addCompositeConfig(configs, BotCommands.UPDATE_DETAILS, BotCommands.UPDATE_TEAMS, BotCommands.UPDATE_DIFFS, BotCommands.LEAGUE_CHIPS, BotCommands.LEAGUE_STATS);
       break;
     case BotCommands.UPDATE_LEAGUE.command:
       await addCompositeConfig(configs, BotCommands.LEAGUE_INDIVIDUAL, BotCommands.LEAGUE_H2H, BotCommands.LEAGUE_DIFFS);
@@ -50,26 +50,29 @@ async function createConfig(command, input) {
       break;
     case BotCommands.LEAGUE_INDIVIDUAL.command:
       await addScoringConfig(configs, 'Haven', 'Haven-Individual');
+      await addDiffConfig(configs, 'Haven', 'Haven-CL');
       await addScoringConfig(configs, 'Haven', 'Haven-H2H');
       await addScoringConfig(configs, 'Haven', 'Haven-Ownership-Top10');
-      // await addDiffConfig(configs, 'Haven', 'Haven-CL');
       break;
     case BotCommands.LEAGUE_DIFFS.command:
       await addDiffConfig(configs, 'Haven', 'Haven-H2H');
       break;
     case BotCommands.PERSONAL_FAST.command:
-      // await addScoringConfig(configs, 'FFC', 'FFC-H2H');
       await addScoringConfig(configs, 'FFFL', 'FFFL-H2H');
       await addScoringConfig(configs, 'Hustle', 'Hustle-H2H');
-      configs.push(createCustomUpdateConfig('HUSTLE RUMBLE', 'Hustle-Rumble'));
       break;
     case BotCommands.PERSONAL_SLOW.command:
       // await addScoringConfig(configs, 'FFC', 'FFC-Individual');
+      // await addScoringConfig(configs, 'FFC-2', 'FFC2-Individual');
       await addScoringConfig(configs, 'Hustle', 'Hustle-Individual');
       await addScoringConfig(configs, 'FFFL', 'FFFL-Individual');
-
+      await addDiffConfig(configs, 'FFC', 'FFC-H2H');
       await addDiffConfig(configs, 'Hustle', 'Hustle-H2H');
       await addDiffConfig(configs, 'FFFL', 'FFFL-H2H');
+      await addScoringConfig(configs, 'FFC', 'FFC-H2H');
+      await addScoringConfig(configs, 'FFC-2', 'FFC2-H2H');
+      await addScoringConfig(configs, 'FFC', 'FFC-Cups');
+      configs.push(createCustomUpdateConfig('HUSTLE RUMBLE', 'Hustle-Rumble'));
       break;
     case BotCommands.LEAGUE_CHIPS.command:
       await addScoringConfig(configs, 'FFC', 'FFC-Chips');
@@ -78,7 +81,7 @@ async function createConfig(command, input) {
       await addScoringConfig(configs, 'Haven', 'Haven-Chips');
       break;
     case BotCommands.LEAGUE_STATS.command:
-      // await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
+      await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
       await addScoringConfig(configs, 'Hustle', 'Hustle-Ownership');
       await addScoringConfig(configs, 'FFFL', 'FFFL-Ownership');
       await addScoringConfig(configs, 'Haven', 'Haven-Ownership');
@@ -90,11 +93,18 @@ async function createConfig(command, input) {
     case BotCommands.LIVE_MATCHES.command:
       configs.push(createCustomUpdateConfig('Live Match Alert', 'LiveMatch', input));
       break;
+    case BotCommands.FFC_SCORES.command:
+      await addScoringConfig(configs, 'FFC', 'FFC-Individual');
+      await addScoringConfig(configs, 'FFC-2', 'FFC2-Individual');
+      await addScoringConfig(configs, 'FFC', 'FFC-H2H');
+      await addScoringConfig(configs, 'FFC-2', 'FFC2-H2H');
+      await addScoringConfig(configs, 'FFC', 'FFC-Cups');
+      break;
     case BotCommands.HAVEN_LEAGUE_PP.command:
       configs.push(createCustomUpdateConfig('Haven League Nomination', 'Haven-League-Nomination', input));
       break;
     case BotCommands.HAVEN_CL_PP.command:
-      // configs.push(createCustomUpdateConfig('Haven CL Nomination', 'Haven-Cl-Nomination', input));
+      configs.push(createCustomUpdateConfig('Haven CL Nomination', 'Haven-CL-Nomination', input));
       break;
     case BotCommands.HUSTLE_NOMINATION.command:
       configs.push(createCustomUpdateConfig('Hustle Nomination', 'Hustle-Nomination', input));
@@ -110,15 +120,6 @@ async function createConfig(command, input) {
       break;
     case BotCommands.TEAM_SCORE.command:
       configs.push(createCustomUpdateConfig('Team Score', 'TeamScore', input));
-      break;
-    case BotCommands.IPL_LIVE.command:
-      configs.push(createCustomUpdateConfig('Live IPL', 'IPL-Live', input));
-      break;
-    case BotCommands.IPL_SCORE.command:
-      configs.push(createCustomUpdateConfig('IPL Score', 'IPL-Score', input));
-      break;
-    case BotCommands.MY_IPL_SCORE.command:
-      configs.push(createCustomUpdateConfig('IPL Score', 'My-IPL-Score', input));
       break;
     case BotCommands.VACCINE_ALERT.command:
       configs.push(createCustomUpdateConfig('Bangalore Vaccine', 'vaccine', input));

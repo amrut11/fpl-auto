@@ -50,8 +50,7 @@ const BotCommands = Object.freeze({
     'type': 'public'
   },
   LEAGUE_H2H: {
-    'command': 'league_h2h',
-    'type': 'mod'
+    'command': 'league_h2h'
   },
   PERSONAL_FAST: {
     'command': 'personal_fast'
@@ -63,8 +62,7 @@ const BotCommands = Object.freeze({
     'command': 'personal_slow'
   },
   LEAGUE_DIFFS: {
-    'command': 'league_diffs',
-    'type': 'mod'
+    'command': 'league_diffs'
   },
   LEAGUE_CHIPS: {
     'command': 'league_chips'
@@ -74,6 +72,10 @@ const BotCommands = Object.freeze({
   },
   LIVE_MATCHES: {
     'command': 'live_matches'
+  },
+  FFC_SCORES: {
+    'command': 'ffc_scores',
+    'type': 'mod'
   },
   HAVEN_LEAGUE_PP: {
     'command': 'haven_league_pp',
@@ -103,15 +105,6 @@ const BotCommands = Object.freeze({
     'command': 'team_score',
     'type': 'public'
   },
-  IPL_LIVE: {
-    'command': 'ipl_live'
-  },
-  IPL_SCORE: {
-    'command': 'ipl_score'
-  },
-  MY_IPL_SCORE: {
-    'command': 'my_ipl_score'
-  },
   VACCINE_ALERT: {
     'command': 'vaccine_alert'
   }
@@ -122,8 +115,18 @@ const LEAGUES = Object.freeze({
     'name': 'FFC',
     'sheet-id': process.env.FFC_PP_SHEET_ID,
     'fixture-count': 10,
+    'cup-scores': true,
     'chip-col-index': 2,
-    'no-of-managers': 160
+    'no-of-managers': 160,
+    'diff-teams': ['Southampton']
+  },
+  FFC2: {
+    'name': 'FFC-2',
+    'sheet-id': process.env.FFC2_PP_SHEET_ID,
+    'fixture-count': 10,
+    'chip-col-index': 2,
+    'no-of-managers': 120,
+    'diff-teams': []
   },
   HUSTLE: {
     'name': 'Hustle',
@@ -131,21 +134,21 @@ const LEAGUES = Object.freeze({
     'fixture-count': 12,
     'chip-col-index': 3,
     'no-of-managers': 192,
-    'diff-teams': ['BOU', 'WHU', 'BHA']
+    'diff-teams': ['WHU', 'LEE']
   },
   HAVEN: {
     'name': 'Haven',
     'sheet-id': process.env.HAVEN_PP_SHEET_ID,
     'fixture-count': 10,
     'update-score-sheet': true,
-    'free-agent-scores': false,
+    'free-agent-scores': true,
     'chip-col-index': 4,
     'no-of-managers': 200
   },
   HAVEN_CL: {
     'name': 'Haven CL',
     'sheet-id': process.env.HAVEN_CUP_SHEET_ID,
-    'fixture-count': 6,
+    'fixture-count': 12,
   },
   FFFL: {
     'name': 'FFFL',
@@ -154,13 +157,17 @@ const LEAGUES = Object.freeze({
     'chip-col-index': 5,
     'no-of-managers': 128,
     'sub-multiplier': 0.5,
-    'diff-teams': ['Cardiff', 'Hull']
+    'diff-teams': ['Hull']
   },
 });
 
 const LEAGUE_CONFIGS = Object.freeze({
   FFC_H2H: {
     'league': LEAGUES.FFC,
+    'score-type': 'H2H'
+  },
+  FFC2_H2H: {
+    'league': LEAGUES.FFC2,
     'score-type': 'H2H'
   },
   HUSTLE_H2H: {
@@ -179,6 +186,10 @@ const LEAGUE_CONFIGS = Object.freeze({
     'league': LEAGUES.FFC,
     'score-type': 'Individual'
   },
+  FFC2_INDIVIDUAL: {
+    'league': LEAGUES.FFC2,
+    'score-type': 'Individual'
+  },
   HUSTLE_INDIVIDUAL: {
     'league': LEAGUES.HUSTLE,
     'score-type': 'Individual'
@@ -190,6 +201,10 @@ const LEAGUE_CONFIGS = Object.freeze({
   FFFL_INDIVIDUAL: {
     'league': LEAGUES.FFFL,
     'score-type': 'Individual'
+  },
+  FFC_DIFFS: {
+    'league': LEAGUES.FFC,
+    'score-type': 'Diffs'
   },
   HUSTLE_DIFFS: {
     'league': LEAGUES.HUSTLE,
@@ -255,6 +270,7 @@ const LEAGUE_CONFIGS = Object.freeze({
 
 const TOURN_MAP = {
   'FFC': Tournaments.ffcTournament,
+  'FFC-2': Tournaments.ffc2Tournament,
   'FFC-UCL': Tournaments.ffcUclTournament,
   'Hustle': Tournaments.hustleTournament,
   'Haven': Tournaments.havenTournament,
@@ -264,6 +280,7 @@ const TOURN_MAP = {
 
 const MATCH_CONFIG_MAP = {
   'FFC': MatchConfigs.ffcMatchConfig,
+  'FFC-2': MatchConfigs.ffc2MatchConfig,
   'FFC-UCL': MatchConfigs.ffcUclMatchConfig,
   'Hustle': MatchConfigs.hustleMatchConfig,
   'Haven': MatchConfigs.havenMatchConfig,

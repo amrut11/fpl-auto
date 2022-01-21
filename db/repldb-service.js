@@ -13,6 +13,8 @@ async function showRaw() {
     if (list[i].includes('b Jayant Yadav') || list[i].includes('Kagiso Rabada')) {
       // await db.delete(list[i]);
       console.dir('deleted ' + list[i]);
+      var val = await db.get(list[i]);
+      console.dir(val);
     }
   }
 }

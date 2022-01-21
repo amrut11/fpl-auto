@@ -64,6 +64,14 @@ const DefaultAlerts = Object.freeze([
     'is-live': false
   },
   {
+    command: 'personal_slow',
+    frequency: 3600,
+    'last-checked': null,
+    'last-processed': null,
+    'process-order': 9,
+    'is-live': false
+  },
+  {
     command: 'live_matches',
     frequency: 50,
     'last-checked': null,
@@ -149,14 +157,6 @@ const DefaultAlerts = Object.freeze([
     'last-checked': null,
     'last-processed': null,
     'process-order': 71,
-    'is-live': true
-  },
-  {
-    command: 'personal_slow',
-    frequency: 2400,
-    'last-checked': null,
-    'last-processed': null,
-    'process-order': 72,
     'is-live': true
   },
 ]);

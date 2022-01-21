@@ -23,6 +23,7 @@ const ffflCalculator = require('./fffl/ffflcalculator');
 const opponentSheetId = '1TKrYugIgPQViKZV10Gu25yWHdoBfgGv7bSU9qGLFRTM';
 
 const ffcTournament = new interfaces.Tournament('FFC', ffcSheetId, ffcDifferential, ffcCalculator);
+const ffc2Tournament = new interfaces.Tournament('FFC2', ffcSheetId, ffcDifferential, ffcCalculator);
 const ffcUclTournament = new interfaces.Tournament('FFC-UCL', ffcUclSheetId, ffcUclDifferential, ffcUclCalculator);
 const hustleTournament = new interfaces.Tournament('Hustle', hustleSheetId, hustleDifferential, hustleCalculator);
 const havenTournament = new interfaces.Tournament('Haven', havenSheetId, havenDifferential, havenCalculator);
@@ -30,5 +31,5 @@ const ffflTournament = new interfaces.Tournament('FFFL', ffflSheetId, ffflDiffer
 const opponent = new interfaces.Tournament('Opponent', opponentSheetId, null, null);
 
 module.exports = {
-  ffcTournament, ffcUclTournament, hustleTournament, havenTournament, ffflTournament, opponent
+  ffcTournament, ffc2Tournament, ffcUclTournament, hustleTournament, havenTournament, ffflTournament, opponent
 }

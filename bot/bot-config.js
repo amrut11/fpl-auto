@@ -86,6 +86,10 @@ function configure() {
     commandProcessor.runCommand(BotCommands.TEAM_SCORE, msg.chat.id, teamId);
   });
 
+  bot.onText(/[Ff]fc/, async (msg) => {
+    commandProcessor.runCommand(BotCommands.FFC_SCORES, msg.chat.id);
+  });
+
   bot.onText(/\/haven_league_pp/, async (msg) => {
     var teamId = teamIdMap.getTeamId(msg.chat.id);
     commandProcessor.runCommand(BotCommands.HAVEN_LEAGUE_PP, msg.chat.id, teamId);

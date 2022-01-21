@@ -13,6 +13,7 @@ const GWFIXS_COLUMN = 3;
 const TAB_INDEX = 7;
 
 async function updateResults() {
+  console.log('Updating FDR with latest results');
   var results = await resultsWriter.getResults();
   await updateSheet(results, GWFIXS_COLUMN);
 }
@@ -28,6 +29,7 @@ async function updatePlayers() {
     msg += fpl.getPlayerName(element.id);
     msg += ':' + fpl.getTeamName(element.team);
     msg += ':' + element.now_cost / 10;
+    msg += ':' + element.id;
     msg += '^';
   }
   await updateSheet(msg, PLAYERS_COLUMN);
@@ -67,7 +69,7 @@ async function updateFixtures() {
       fixs.push(homeTeam.toLowerCase());
       if (teams[awayTeam][fixture.event]) {
         if(teams[awayTeam][fixture.event * 10]) {
-          teams[away][fixture.event * 10 + 1] = fixs;
+          teams[awayTeam][fixture.event * 10 + 1] = fixs;
         } else {
           teams[awayTeam][fixture.event * 10] = fixs;
         }
@@ -103,6 +105,7 @@ function createFixMsg(teams) {
 
 async function updatePlayerData() {
   console.log('Updating Fixtures with latest players and positions');
+  var fpl = new fplService();
   await fpl.init(1000);
   var elements = fpl.getElements();
   var msg = '';

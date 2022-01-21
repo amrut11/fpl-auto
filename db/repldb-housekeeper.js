@@ -9,7 +9,6 @@ const fpl = new fplService();
 async function cleanUp() {
   await cleanUpBotUsage();
   await cleanUpFixs();
-  await cleanUpIpl();
 }
 
 async function cleanUpBotUsage() {
@@ -40,15 +39,6 @@ async function cleanUpFixs() {
         await db.delete('fix-suffix-update-' + fix.id);
       }
     }
-  }
-}
-
-async function cleanUpIpl() {
-  var iplData = await db.list('ipl-');
-  for (var i in iplData) {
-    var data = iplData[i];
-    console.log('Deleting IPL ' + data);
-    await db.delete(data);
   }
 }
 
