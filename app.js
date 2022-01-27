@@ -78,11 +78,6 @@ app.get('/resetAlerts', async function(req, res) {
   res.render('index');
 });
 
-app.get('/raw', async function(req, res) {
-  await db.showRaw();
-  res.render('index');
-});
-
 app.get('/fdr', async function(req, res) {
   await fplDataWriter.updateFixtures();
   await fplDataWriter.updatePlayers();

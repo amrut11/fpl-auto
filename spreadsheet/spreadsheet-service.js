@@ -1,10 +1,16 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const creds = require(`./client-secret`);
 
+const docCache = new Object();
+
 async function getDoc(sheetId) {
+  if (docCache[sheetId]) {
+    return docCache[sheetId];
+  }
   const doc = new GoogleSpreadsheet(sheetId);
   await doc.useServiceAccountAuth(creds);
   await doc.loadInfo();
+  docCache[sheetId] = doc;
   return doc;
 }
 

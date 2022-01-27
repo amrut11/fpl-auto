@@ -51,8 +51,8 @@ function prepareMessage(fpl, players) {
       msg += '\n*Goals / Assists: *' + player.goals_scored + ' / ' + player.assists;
     }
     msg += '\n*Yellows / Reds: *' + player.yellow_cards + ' / ' + player.red_cards;
-    var availability = (player.chance_of_playing_next_round == null || player.chance_of_playing_next_round == 100) ? '💪' : player.chance_of_playing_next_round;
-    msg += '\n*Availability: *' + availability;
+    var available = player.chance_of_playing_next_round;
+    msg += '\n*Availability: *' + (available == null || available == 100) ? '💪' : available;
     var special = getSpecial(player);
     if (special != '') {
       msg += '\n*Special: *' + special;

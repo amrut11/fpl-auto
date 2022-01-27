@@ -8,7 +8,7 @@ const dbHkJob = require('./housekeeping-jobs').dbHkJob;
 
 function startJobs() {
   fplAlertsPromotion.start();
-  alertServiceJob.start();
+  // alertServiceJob.start();
   priceChangeJob.start();
   dailyGamesJob.start();
   updateJob.start();

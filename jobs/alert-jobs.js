@@ -6,8 +6,8 @@ const transfersReader = require('../spreadsheet/reader/transfers-reader');
 const vaccineAlertService = require('../alerts/vaccine-alert-service');
 
 const ALERT_SERVICE_CRON = process.env.ALERT_SERVICE_CRON;
-const PRICE_CHANGE_CRON = process.env.PRICE_CHANGE_CRON;
-// const PRICE_CHANGE_CRON = process.env.PRICE_CHANGE_PRESEASON;
+// const PRICE_CHANGE_CRON = process.env.PRICE_CHANGE_CRON;
+const PRICE_CHANGE_CRON = process.env.PRICE_CHANGE_PRESEASON;
 const DAILY_GAMES_CRON = process.env.DAILY_GAMES_CRON;
 const VACCINE_CRON = process.env.VACCINE_CRON;
 

@@ -256,9 +256,21 @@ class FplService {
         map[element.id] += firstFixture && !finished[firstFixture.fixture] ? 1 : 0;
         map[element.id] += secondFixture && !finished[secondFixture.fixture] ? 1 : 0; // dgw
         map[element.id] += thirdFixture && !finished[thirdFixture.fixture] ? 1 : 0; // tgwtf
+        if (!this.getPlayerAvailability(element.id)) {
+          map[element.id] = 0;
+        }
       }
     }
     return map;
+  }
+
+  getPlayerAvailability(id) {
+    var elements = this.getElements();
+    for (var i in elements) {
+      if (elements[i].id == id) {
+        return this.isGwOngoing() ? elements[i].chance_of_playing_this_round > 0 : elements[i].chance_of_playing_next_round > 0;
+      }
+    }
   }
 
   getFinishedFixs() {

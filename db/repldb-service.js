@@ -7,27 +7,13 @@ const DefaultAlerts = require('../data/default-alerts').DefaultAlerts;
 
 const db = new Database();
 
-async function showRaw() {
-  var list = await db.list();
-  for (var i in list) {
-    if (list[i].includes('b Jayant Yadav') || list[i].includes('Kagiso Rabada')) {
-      // await db.delete(list[i]);
-      console.dir('deleted ' + list[i]);
-      var val = await db.get(list[i]);
-      console.dir(val);
-    }
-  }
-}
-
 async function showAll() {
   var list = await db.list();
   var allRecords = new Object();
   allRecords.length = list.length;
   let records = [];
   for (var i in list) {
-    if (!list[i].includes('player-price')) {
-      records.push(await createRecord(list[i]));
-    }
+    records.push(await createRecord(list[i]));
   }
   allRecords.records = records;
   allRecords.length = records.length;
@@ -67,13 +53,17 @@ async function showBotAccess() {
 async function showPrices() {
   const fpl = new fplService();
   await fpl.init(1000);
-  var list = await db.list('player-price-');
+  var allPrices = await db.get('player-prices');
   var prices = new Object();
-  prices.length = list.length;
   let priceDetails = [];
-  for (var i in list) {
-    priceDetails.push(await createPriceDetail(fpl, list[i]));
+  for (var i = 0, count = 0; i < allPrices.length; i++) {
+    var price = allPrices[i];
+    if (price) {
+      count++;
+      priceDetails.push({ 'id': i, 'name': fpl.getPlayerName(i), 'price': price });
+    }
   }
+  prices.length = count;
   prices.priceDetails = priceDetails;
   return prices;
 }
@@ -135,15 +125,6 @@ async function createUsageDetail(id) {
   return usageDetail;
 }
 
-async function createPriceDetail(fpl, id) {
-  var priceDetail = new Object();
-  priceDetail.id = id;
-  var items = id.split('-');
-  priceDetail.name = fpl.getPlayerName(items[items.length - 1]);
-  priceDetail.price = await db.get(id);
-  return priceDetail;
-}
-
 async function createResp(list) {
   var resp = 'Number of records: ' + list.length;
   for (var i in list) {
@@ -165,4 +146,4 @@ async function createAlert(dbAlert) {
   return alert;
 }
 
-module.exports = { showRaw, showAll, showValue, showLiveMatchScores, storeBotAccess, showBotAccess, showPrices, showAlerts, resetAlerts, clearBotAccess, clearPrices }
+module.exports = { showAll, showValue, showLiveMatchScores, storeBotAccess, showBotAccess, showPrices, showAlerts, resetAlerts, clearBotAccess, clearPrices }

@@ -23,7 +23,7 @@ async function getPlayerData(fpl, playerId, gw, liveScores) {
 }
 
 async function getTeam(fpl, playerId, gw) {
-  var key = playerId + '-' + fpl.isGwOngoing() + '-' + fpl.getRemainingFixsCount();
+  var key = playerId + '-' + fpl.isGwOngoing() + '-' + fpl.getRemainingFixsCount(gw);
   if (key in teamCache) {
     return teamCache[key];
   }

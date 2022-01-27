@@ -12,11 +12,6 @@ const CAP_SHEET_ID = process.env.H2H_FIXTURE_SHEET_ID;
 const CUP_SHEET_ID = process.env.HAVEN_CUP_SHEET_ID;
 const FFC_CUP_SHEET_ID = process.env.FFC_CUP_SHEET_ID;
 
-const SCORE_TAB_INDEX = 21;
-const CAP_TAB_INDEX = 14;
-
-const ROW_NUM = 1;
-
 async function calculateLeague(fpl, updateConfig, leagueConfig) {
   var gw = await fpl.init(1000);
   var teams = updateConfig.matchConfig.teams;
@@ -61,7 +56,7 @@ async function calculateLeague(fpl, updateConfig, leagueConfig) {
   }
   if (leagueConfig.league['update-score-sheet']) {
     console.log('Updating league scores');
-    await updateSheet(gw, SCORE_SHEET_ID, SCORE_TAB_INDEX, pScores);
+    await updateSheet(gw, SCORE_SHEET_ID, 'Raw', pScores);
   }
   if (leagueConfig.league['free-agent-scores']) {
     console.log('Updating free agent scores');
@@ -83,7 +78,7 @@ async function calculateLeague(fpl, updateConfig, leagueConfig) {
     case 'Ownership':
       return await ownershipProcessor.findFinalOwnership(leagueConfig.league, ownership, liveScores, fpl, gw, leagueConfig['full-ownership']);
     case 'Captains':
-      await updateSheet(gw, CAP_SHEET_ID, CAP_TAB_INDEX, pCaps);
+      await updateSheet(gw, CAP_SHEET_ID, 'Raw-Caps', pCaps);
       return 'Captains updated';
   }
 }
@@ -240,7 +235,7 @@ function getHomeScore(homeScores, tournName) {
 
 async function updateSheet(gw, sheetId, tabIndex, details) {
   var formattedDetails = formatDetails(details);
-  await ssService.updateValue(sheetId, tabIndex, ROW_NUM, gw + 1, formattedDetails);
+  await ssService.updateValue(sheetId, tabIndex, 1, gw + 1, formattedDetails);
 }
 
 function formatDetails(pDetails) {

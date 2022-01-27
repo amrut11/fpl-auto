@@ -1,17 +1,14 @@
 const Database = require('@replit/database');
 const bot = require('../bot/bot-service');
 const fplService = require('../processor/request/fpl-service');
-
-const dbService = require('../db/price-db-service');
+const dateUtils = require('../utils/date-utils');
 
 const FPL_CHANNEL_ID = process.env.fplChannelId;
 
 const fpl = new fplService();
 const db = new Database();
 
-const dateFormat = require('dateformat');
-
-const PRICE_CHANGE_PREFIX = 'player-price-';
+const PLAYER_PRICES_KEY = 'player-prices';
 
 const SIGNATURE = '\n\nFollow *FPL Alerts* for more updates: https://t.me/fplalerts';
 
@@ -30,98 +27,56 @@ async function processChanges() {
   await fpl.init(1000);
   var elements = fpl.getElements();
   let risers = fallers = newPlayers = '';
+  var prices = await db.get(PLAYER_PRICES_KEY);
   for (var i in elements) {
     var element = elements[i];
     var playerId = element.id;
-    var playerName = fpl.getPlayerName(playerId);
-    playerId += '';
-    playerTeam = fpl.getTeamName(element.team);
-    playerPosition = fpl.getPlayerPosition(element.element_type);
-    var oldPrice = await db.get(PRICE_CHANGE_PREFIX + playerId);
     var newPrice = element.now_cost;
-    var priceChange = '*' + playerName + '*' + ' (' + playerTeam + '): ' + newPrice / 10 + 'm (' + playerPosition + ')\n';
+    var msg = '*' + fpl.getPlayerName(playerId) + '*' + ' (' + fpl.getTeamName(element.team) + '): ' + newPrice / 10 + 'm (' + fpl.getPlayerPosition(element.element_type) + ')\n';
+    var oldPrice = prices[playerId];
     if (oldPrice) {
       if (newPrice > oldPrice) {
-        risers += '🔼  ' + priceChange;
-        await db.set(PRICE_CHANGE_PREFIX + playerId, newPrice);
+        risers += '🔼  ' + msg;
+        prices[playerId] = newPrice;
       } else if (newPrice < oldPrice) {
-        fallers += '🔽  ' + priceChange;
-        await db.set(PRICE_CHANGE_PREFIX + playerId, newPrice);
+        fallers += '🔽  ' + msg;
+        prices[playerId] = newPrice;
       }
     } else {
-      newPlayers += '▶️  ' + priceChange;
-      await db.set(PRICE_CHANGE_PREFIX + playerId, newPrice);
+      newPlayers += '▶️  ' + msg;
+      prices[playerId] = newPrice;
     }
   }
   sendAlerts(risers.trim(), fallers.trim(), newPlayers.trim());
+  await db.set(PLAYER_PRICES_KEY, prices);
 }
 
 function sendAlerts(risers, fallers, newPlayers) {
-  var sendMessage = false;
-  var date = dateFormat(new Date(), 'dd mmm yyyy');
-  var message = '*Price changes on ' + date + '*';
-  message += '\n-------------------------\n*Risers*\n-------------------------\n';
+  var isPriceChange = false;
+  var date = dateUtils.getFullDate();
+  var msg = '*Price changes on ' + date + '*';
+  msg += '\n-------------------------\n*Risers*\n-------------------------\n';
   if (risers.length > 0) {
-    message += risers;
-    sendMessage = true;
+    msg += risers;
+    isPriceChange = true;
   } else {
-    message += 'None';
+    msg += 'None';
   }
-  message += '\n-------------------------\n*Fallers*\n-------------------------\n';
+  msg += '\n-------------------------\n*Fallers*\n-------------------------\n';
   if (fallers.length > 0) {
-    message += fallers;
-    sendMessage = true;
+    msg += fallers;
+    isPriceChange = true;
   } else {
-    message += 'None';
+    msg += 'None';
   }
-  if (sendMessage) {
-    message += SIGNATURE;
-    bot.sendMessage(FPL_CHANNEL_ID, message);
+  if (isPriceChange) {
+    msg += SIGNATURE;
+    bot.sendMessage(FPL_CHANNEL_ID, msg);
   }
   if (newPlayers.length > 0) {
-    var message = newPlayers + SIGNATURE;
-    bot.sendMessage(FPL_CHANNEL_ID, '*New player(s) found on ' + date + '*\n-------------------------\n' + message);
+    var msg = '*New player(s) found on ' + date + '*\n-------------------------\n' + newPlayers + SIGNATURE;
+    bot.sendMessage(FPL_CHANNEL_ID, msg);
   }
-}
-
-async function processChangesFromElephant() {
-  var currentPrices = await dbService.getAllPlayers();
-  await fpl.init(1000);
-  var elements = fpl.getElements();
-  let risers = fallers = newPlayers = '';
-  for (var i in elements) {
-    var element = elements[i];
-    var playerId = element.id;
-    var playerName = fpl.getPlayerName(playerId);
-    playerTeam = fpl.getTeamName(element.team);
-    playerPosition = fpl.getPlayerPosition(element.element_type);
-    var oldPrice = getCurrentPrice(currentPrices, playerId);
-    var newPrice = element.now_cost;
-    var priceChange = '*' + playerName + '*' + ' (' + playerTeam + '): ' + newPrice / 10 + 'm (' + playerPosition + ')\n';
-    if (oldPrice) {
-      if (newPrice > oldPrice) {
-        risers += '🔼  ' + priceChange;
-        dbService.updateNewPrice(playerId, newPrice);
-      } else if (newPrice < oldPrice) {
-        fallers += '🔽  ' + priceChange;
-        dbService.updateNewPrice(playerId, newPrice);
-      }
-    } else {
-      newPlayers += '▶️  ' + priceChange;
-      await dbService.addNewPlayer(playerId, playerName, newPrice);
-    }
-  }
-  sendAlerts(risers.trim(), fallers.trim(), newPlayers.trim());
-}
-
-function getCurrentPrice(currentPrices, playerId) {
-  for (var i in currentPrices) {
-    var currentPrice = currentPrices[i];
-    if (currentPrice.player_id == playerId) {
-      return currentPrice.player_price;
-    }
-  }
-  return null;
 }
 
 module.exports = { checkChanges }
