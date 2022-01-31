@@ -52,7 +52,7 @@ function prepareMessage(fpl, players) {
     }
     msg += '\n*Yellows / Reds: *' + player.yellow_cards + ' / ' + player.red_cards;
     var available = player.chance_of_playing_next_round;
-    msg += '\n*Availability: *' + (available == null || available == 100) ? '💪' : available;
+    msg += '\n*Availability: *' + (available == null || available == 100 ? '💪' : available + ' (' + player.news + ')');
     var special = getSpecial(player);
     if (special != '') {
       msg += '\n*Special: *' + special;
