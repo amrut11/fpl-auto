@@ -1,6 +1,6 @@
 const request = require('request');
 
-const sameLastName = ['Baptiste', 'Barnes', 'Bernardo', 'Chalobah', 'Cresswell', 'Davies', 'Diallo', 'Ferguson', 'Fernández', 'Gordon', 'Gray', 'Greenwood', 'Henderson', 'Hernández', 'James', 'Jones', 'Lewis', 'Long', 'Mendy', 'Nelson', 'Pereira', 'Phillips', 'Ramsey', 'Roberts', 'Rodrigo', 'Sarr', 'Stephens', 'Sánchez', 'Sørensen', 'Thomas', 'Traoré', 'Ward', 'White'];
+const sameLastName = ['Baptiste', 'Barnes', 'Bernardo', 'Chalobah', 'Cresswell', 'Davies', 'Diallo', 'Ferguson', 'Fernández', 'Gordon', 'Gray', 'Greenwood', 'Hayden', 'Henderson', 'Hernández', 'James', 'Jones', 'Lewis', 'Long', 'Mendy', 'Nelson', 'Pereira', 'Phillips', 'Ramsey', 'Roberts', 'Rodrigo', 'Sarr', 'Stephens', 'Sánchez', 'Sørensen', 'Thomas', 'Traoré', 'Ward', 'White'];
 
 const simpleNameMap = {
   'Fernandes': 'Bruno',

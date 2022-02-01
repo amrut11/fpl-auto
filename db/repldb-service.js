@@ -53,12 +53,12 @@ async function showBotAccess() {
 async function showPrices() {
   const fpl = new fplService();
   await fpl.init(1000);
-  var allPrices = await db.get('player-prices');
+  var allPrices = await db.get('player-status');
   var prices = new Object();
   let priceDetails = [];
   for (var i = 0, count = 0; i < allPrices.length; i++) {
-    var price = allPrices[i];
-    if (price) {
+    if (allPrices[i]) {
+      var price = allPrices[i].price;
       count++;
       priceDetails.push({ 'id': i, 'name': fpl.getPlayerName(i), 'price': price });
     }
