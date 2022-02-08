@@ -14,12 +14,12 @@ const SIGNATURE = '\n\nFollow *FPL Alerts* for more updates: https://t.me/fplale
 
 async function checkChanges() {
   try {
-    console.log('Checking for price changes');
+    console.log('Checking for status changes');
     await processChanges();
-    console.log('Price check complete');
+    console.log('Status check complete');
   } catch (err) {
     console.error(err);
-    bot.sendMessage(process.env.author, 'On ' + new Date() + ' execution of price change service failed with error ' + err);
+    bot.sendMessage(process.env.author, 'On ' + new Date() + ' execution of status change service failed with error ' + err);
   }
 }
 

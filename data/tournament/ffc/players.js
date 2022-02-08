@@ -4,8 +4,7 @@ const Villa = { 'Kunal': 1912641, 'Anupam': 10785, 'Mihir': 3317436, 'Adi AVL': 
 
 const Brentford = { 'Jyotirmoy': 313589, 'Utsav': 951363, 'Soumik': 67084, 'Vishnu BRE': 167307, 'Saurabh BRE': 984338, 'Torkel': 6922, 'Eirik': 2170302, 'Christian': 115952 };
 
-const Brighton = { 'Saksham': 7306, 'Uday': 7723, 'Samarth': 57783, 'Manan BRI': 17061, 'Anson': 880321, 'Tanmay': 6295, 'Giridhar': 904631, 'Aakash': 6609 };
-// 'Piyush': 34086
+const Brighton = { 'Saksham': 7306, 'Piyush': 34086, 'Samarth': 57783, 'Manan BRI': 17061, 'Anson': 880321, 'Tanmay': 6295, 'Giridhar': 904631, 'Aakash': 6609 };
 
 const Burnley = { 'Meghan': 15012, 'Siddharth': 156809, 'Sagar M': 28110, 'Sagar S': 21598, 'Eshaan': 3228078, 'Dhruv BUR': 2489, 'Devansh': 2166500, 'Maitreya': 825079 };
 

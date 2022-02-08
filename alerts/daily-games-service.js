@@ -24,7 +24,7 @@ async function checkGames() {
   var message = '*Today\'s FPL games (time in IST)\n*';
   var fixs = await getTodayGames(fpl);
   if (fixs.length > 0) {
-    message += fix + SIGNATURE;
+    message += fixs + SIGNATURE;
     bot.sendMessage(FPL_CHANNEL_ID, message);
   }
 }

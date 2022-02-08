@@ -57,8 +57,7 @@ function prepareMessage(fpl, players) {
     if (special != '') {
       msg += '\n*Special: *' + special;
     }
-    var fixtures = getFixtures(fpl, player.team);
-    msg += '\n*Fixtures: *' + fixtures;
+    msg += '\n*Fixtures: *' + getFixtures(fpl, player.team);
   }
   return msg;
 }
@@ -78,26 +77,28 @@ function getSpecial(player) {
 }
 
 function getFixtures(fpl, team) {
-  var fixtures = fpl.getFixtures();
   var gw = fpl.getCurrentEvent();
   var output = '';
-  var fixtureCount = 0;
-  for (var i in fixtures) {
-    var fixture = fixtures[i];
-    if (fixture.event == gw + (gw == 1 ? 0 : 1) + fixtureCount) {
-      if (fixture.team_a == team) {
-        output += fpl.getTeamName(fixture.team_h) + '(A), ';
-        fixtureCount++;
-      } else if (fixture.team_h == team) {
-        output += fpl.getTeamName(fixture.team_a) + '(H), ';
-        fixtureCount++;
-      }
-    }
-    if (fixtureCount == 5) {
-      break;
-    }
+  for (var i = gw + 1; i <= 38 && i <= (gw + 5); i++) {
+    output += getGwFixs(fpl, team, i) + ', ';
   }
   return output;
+}
+
+function getGwFixs(fpl, team, gw) {
+  var fixtures = fpl.getFixtures();
+  var output = '';
+  for (var i in fixtures) {
+    var fixture = fixtures[i];
+    if (fixture.event == gw) {
+      if (fixture.team_a == team) {
+        output += fpl.getTeamName(fixture.team_h) + '(A)';
+      } else if (fixture.team_h == team) {
+        output += fpl.getTeamName(fixture.team_a) + '(H)';
+      }
+    }
+  }
+  return output == '' ? 'blank' : output;
 }
 
 module.exports = { getPlayerDetails }

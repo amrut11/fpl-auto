@@ -83,12 +83,13 @@ async function updateFixs() {
     }
     await sheet.saveUpdatedCells();
   }
+  return 'Fixs updated!';
 }
 
 async function createFixs() {
   var sheet = await ssService.getSheet(TRACKER_SHEET_ID, 5, 25, 40);
   let fixs = [];
-  for (var col = 3; col <= 25; col++) {
+  for (var col = 3; col <= 38; col++) {
     let doneTeams = [];
     for (var row = 2; row <= 25; row++) {
       var homeTeam = ssService.getValue(sheet, row, 2);
