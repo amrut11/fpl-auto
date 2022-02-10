@@ -4,7 +4,7 @@ const BotCommands = require('../../data/enums').BotCommands;
 const tournMap = require('../../data/enums').TOURN_MAP;
 const matchConfigMap = require('../../data/enums').MATCH_CONFIG_MAP;
 
-const TOURNAMENTS = ['FFC', 'Hustle', 'Haven', 'FFFL'];
+const TOURNAMENTS = ['FFC', 'FFC-Cups', 'Hustle', 'Haven', 'FFFL'];
 
 async function createConfig(command, input) {
   let configs = [];
@@ -46,7 +46,8 @@ async function createConfig(command, input) {
       await addConfigs(configs, 'No', 'None', 'None', 'ReadFinal');
       break;
     case BotCommands.LEAGUE_H2H.command:
-      await addScoringConfig(configs, 'Haven', 'Haven-Overall');
+      // await addScoringConfig(configs, 'Haven', 'Haven-Overall');
+      await addDiffConfig(configs, 'FFC-Cups', 'FFC-Cups');
       break;
     case BotCommands.LEAGUE_INDIVIDUAL.command:
       await addScoringConfig(configs, 'Haven', 'Haven-Individual');

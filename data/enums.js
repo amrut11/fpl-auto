@@ -128,6 +128,11 @@ const LEAGUES = Object.freeze({
     'no-of-managers': 120,
     'diff-teams': []
   },
+  FFC_CUPS: {
+    'name': 'FFC CUPS',
+    'sheet-id': process.env.FFC_CUP_SHEET_ID,
+    'fixture-count': 16,
+  },
   HUSTLE: {
     'name': 'Hustle',
     'sheet-id': process.env.HUSTLE_PP_SHEET_ID,
@@ -206,6 +211,10 @@ const LEAGUE_CONFIGS = Object.freeze({
     'league': LEAGUES.FFC,
     'score-type': 'Diffs'
   },
+  FFC_CUPS_DIFFS: {
+    'league': LEAGUES.FFC_CUPS,
+    'score-type': 'Diffs'
+  },
   HUSTLE_DIFFS: {
     'league': LEAGUES.HUSTLE,
     'score-type': 'Diffs'
@@ -271,7 +280,7 @@ const LEAGUE_CONFIGS = Object.freeze({
 const TOURN_MAP = {
   'FFC': Tournaments.ffcTournament,
   'FFC-2': Tournaments.ffc2Tournament,
-  'FFC-UCL': Tournaments.ffcUclTournament,
+  'FFC-Cups': Tournaments.ffcCupsTournament,
   'Hustle': Tournaments.hustleTournament,
   'Haven': Tournaments.havenTournament,
   'FFFL': Tournaments.ffflTournament,
@@ -281,7 +290,7 @@ const TOURN_MAP = {
 const MATCH_CONFIG_MAP = {
   'FFC': MatchConfigs.ffcMatchConfig,
   'FFC-2': MatchConfigs.ffc2MatchConfig,
-  'FFC-UCL': MatchConfigs.ffcUclMatchConfig,
+  'FFC-Cups': MatchConfigs.ffcCupsMatchConfig,
   'Hustle': MatchConfigs.hustleMatchConfig,
   'Haven': MatchConfigs.havenMatchConfig,
   'FFFL': MatchConfigs.ffflMatchConfig,

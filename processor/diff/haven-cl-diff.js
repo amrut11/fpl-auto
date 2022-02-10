@@ -32,7 +32,7 @@ async function createFixtures(teams, gw, leagueConfig) {
   var teamDetails = createTeamDetails(sheet);
   var fixtureCount = leagueConfig.league['fixture-count'];
   let fixtures = [];
-  for (var i = 0; i < fixtureCount + 3; i++) {
+  for (var i = 0; i < fixtureCount; i++) {
     var fixture = new Object();
 
     homeTeamName = ssService.getValue(sheet, i + 61, 7);

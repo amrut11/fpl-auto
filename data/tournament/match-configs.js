@@ -28,7 +28,7 @@ const ffcMatchConfig = new interfaces.MatchConfig('Everton', ffcPlayers, ffcTeam
 
 const ffc2MatchConfig = new interfaces.MatchConfig('Blackburn', ffc2Players, ffc2Teams, ffc2Teammap);
 
-const ffcUclMatchConfig = new interfaces.MatchConfig('Everton', ffcUclPlayers, ffcUclTeams, ffcUclTeammap);
+const ffcCupsMatchConfig = new interfaces.MatchConfig('Everton', ffcUclPlayers, ffcUclTeams, ffcUclTeammap);
 
 const hustleMatchConfig = new interfaces.MatchConfig('BLA', hustlePlayers, hustleTeams, hustleTeammap);
 
@@ -37,5 +37,5 @@ const havenMatchConfig = new interfaces.MatchConfig('Man City', havenPlayers, ha
 const ffflMatchConfig = new interfaces.MatchConfig('Millwall', ffflPlayers, ffflTeams, ffflTeammap);
 
 module.exports = {
-  ffcMatchConfig, ffc2MatchConfig, ffcUclMatchConfig, hustleMatchConfig, havenMatchConfig, ffflMatchConfig
+  ffcMatchConfig, ffc2MatchConfig, ffcCupsMatchConfig, hustleMatchConfig, havenMatchConfig, ffflMatchConfig
 }

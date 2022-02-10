@@ -268,7 +268,7 @@ class FplService {
     var elements = this.getElements();
     for (var i in elements) {
       if (elements[i].id == id) {
-        return this.isGwOngoing() ? elements[i].chance_of_playing_this_round > 0 : elements[i].chance_of_playing_next_round > 0;
+        return this.isGwOngoing() ? elements[i].chance_of_playing_this_round != 0 : elements[i].chance_of_playing_next_round != 0;
       }
     }
   }

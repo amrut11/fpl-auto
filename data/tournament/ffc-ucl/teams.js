@@ -1,20 +1,45 @@
-const players = require('./players');
-const interfaces = require('../../interfaces');
-
-const blackburn = new interfaces.Team('Blackburn', players.blackburnPlayers);
-const manunited = new interfaces.Team('Man United', players.manunitedPlayers);
-const southampton = new interfaces.Team('Southampton', players.southamptonPlayers);
-const wolves = new interfaces.Team('Wolves', players.wolvesPlayers);
-const burnley = new interfaces.Team('Burnley', players.burnleyPlayers);
-const chelsea = new interfaces.Team('Chelsea', players.chelseaPlayers);
-const mancity = new interfaces.Team('Man City', players.mancityPlayers);
+const ffcTeams = require('../ffc/teams');
+const ffc2Teams = require('../ffc2/teams');
 
 module.exports = {
-  blackburnTeam: blackburn,
-  manunitedTeam: manunited,
-  southamptonTeam: southampton,
-  wolvesTeam: wolves,
-  burnleyTeam: burnley,
-  chelseaTeam: chelsea,
-  mancityTeam: mancity
+  arsenalTeam: ffcTeams.arsenalTeam,
+  villaTeam: ffcTeams.villaTeam,
+  brentfordTeam: ffcTeams.brentfordTeam,
+  brightonTeam: ffcTeams.brightonTeam,
+  burnleyTeam: ffcTeams.burnleyTeam,
+  chelseaTeam: ffcTeams.chelseaTeam,
+  palaceTeam: ffcTeams.palaceTeam,
+  evertonTeam: ffcTeams.evertonTeam,
+  leedsTeam: ffcTeams.leedsTeam,
+  leicesterTeam: ffcTeams.leicesterTeam,
+  liverpoolTeam: ffcTeams.liverpoolTeam,
+  mancityTeam: ffcTeams.mancityTeam,
+  manutdTeam: ffcTeams.manutdTeam,
+  newcastleTeam: ffcTeams.newcastleTeam,
+  norwichTeam: ffcTeams.norwichTeam,
+  southamptonTeam: ffcTeams.southamptonTeam,
+  spursTeam: ffcTeams.spursTeam,
+  watfordTeam: ffcTeams.watfordTeam,
+  westhamTeam: ffcTeams.westhamTeam,
+  wolvesTeam: ffcTeams.wolvesTeam,
+  BarnsleyTeam: ffc2Teams.BarnsleyTeam,
+  BirminghamTeam: ffc2Teams.BirminghamTeam,
+  BlackburnTeam: ffc2Teams.BlackburnTeam,
+  BlackpoolTeam: ffc2Teams.BlackpoolTeam,
+  BournemouthTeam: ffc2Teams.BournemouthTeam,
+  BristolTeam: ffc2Teams.BristolTeam,
+  CardiffTeam: ffc2Teams.CardiffTeam,
+  DerbyTeam: ffc2Teams.DerbyTeam,
+  FulhamTeam: ffc2Teams.FulhamTeam,
+  HullTeam: ffc2Teams.HullTeam,
+  LutonTeam: ffc2Teams.LutonTeam,
+  MiddlesbroughTeam: ffc2Teams.MiddlesbroughTeam,
+  MillwallTeam: ffc2Teams.MillwallTeam,
+  NottinghamTeam: ffc2Teams.NottinghamTeam,
+  QprTeam: ffc2Teams.QprTeam,
+  ReadingTeam: ffc2Teams.ReadingTeam,
+  SheffieldTeam: ffc2Teams.SheffieldTeam,
+  StokeTeam: ffc2Teams.StokeTeam,
+  SwanseaTeam: ffc2Teams.SwanseaTeam,
+  WestBromTeam: ffc2Teams.WestBromTeam,
 }

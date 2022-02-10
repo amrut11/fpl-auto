@@ -72,7 +72,7 @@ async function getNomsFromTracker(gw) {
 async function updateFixs() {
   var fixs = await createFixs();
   var doc = await ssService.getDoc(PP_SHEET_ID);
-  for (var gw = 1; gw <= 38; gw++) {
+  for (var gw = 24; gw <= 34; gw++) {
     var sheet = await ssService.getSheetFromDoc(doc, gw - 1);
     var gwFixs = getGwFixs(fixs, gw);
     var rowNum = 1;

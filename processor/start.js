@@ -5,6 +5,7 @@ const managerGwScore = require('./scoring/manager-gw-score');
 const matchCreator = require('./sheet/match-creator');
 const fullLeague = require('./full-league');
 const havenClDiff = require('./diff/haven-cl-diff');
+const ffcCupsDiff = require('./diff/ffc-cups-diff');
 const liveMatches = require('./live/live-matches');
 const vaccine = require('./live/vaccine');
 
@@ -76,6 +77,9 @@ async function readDetails(fpl, updateConfig) {
   } else if (findDiffs === 'Haven-CL') {
     console.log('Fetching H2H diffs for Haven CL');
     return await havenClDiff.getDiffs(fpl, updateConfig, LEAGUE_CONFIGS.HAVEN_CL_DIFFS);
+  } else if (findDiffs === 'FFC-Cups') {
+    console.log('Fetching H2H diffs for FFC Cups');
+    return await ffcCupsDiff.getDiffs(fpl, updateConfig, LEAGUE_CONFIGS.FFC_CUPS_DIFFS);
   } else if (calculateScores === 'ReadLive') {
     console.log('Reading live scores');
     return await tournDataReader.readLive(sheetConfig.info.sheetsByIndex[5]);
