@@ -8,9 +8,9 @@ const ffc2Players = require('./ffc2/players');
 const ffc2Teams = require('./ffc2/teams');
 const ffc2Teammap = require('./ffc2/teammap');
 
-const ffcUclPlayers = require('./ffc-ucl/players');
-const ffcUclTeams = require('./ffc-ucl/teams');
-const ffcUclTeammap = require('./ffc-ucl/teammap');
+const ffcCupsPlayers = require('./ffc-cups/players');
+const ffcCupsTeams = require('./ffc-cups/teams');
+const ffcCupsTeammap = require('./ffc-cups/teammap');
 
 const hustlePlayers = require('./hustle/players');
 const hustleTeams = require('./hustle/teams');
@@ -28,7 +28,7 @@ const ffcMatchConfig = new interfaces.MatchConfig('Everton', ffcPlayers, ffcTeam
 
 const ffc2MatchConfig = new interfaces.MatchConfig('Blackburn', ffc2Players, ffc2Teams, ffc2Teammap);
 
-const ffcCupsMatchConfig = new interfaces.MatchConfig('Everton', ffcUclPlayers, ffcUclTeams, ffcUclTeammap);
+const ffcCupsMatchConfig = new interfaces.MatchConfig('Everton', ffcCupsPlayers, ffcCupsTeams, ffcCupsTeammap);
 
 const hustleMatchConfig = new interfaces.MatchConfig('BLA', hustlePlayers, hustleTeams, hustleTeammap);
 

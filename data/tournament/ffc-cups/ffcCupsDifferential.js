@@ -1,6 +1,6 @@
 const differential = require('../../../processor/diff/differential');
 
-class ffcucldifferential extends differential {
+class ffcCupsDifferential extends differential {
 
   getMultiplier(team, playerName) {
     if (team.bench.includes(playerName)) {
@@ -12,4 +12,4 @@ class ffcucldifferential extends differential {
 
 }
 
-module.exports = ffcucldifferential;
+module.exports = ffcCupsdifferential;

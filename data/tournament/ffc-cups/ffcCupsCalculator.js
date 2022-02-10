@@ -1,6 +1,6 @@
 const scorecalculator = require('../../../processor/scoring/tourn-team-score-calculator');
 
-class ffcuclcalculator extends scorecalculator {
+class ffcCupsCalculator extends scorecalculator {
 
   async calculate(fpl, gw, gwTeam, callback) {
     let scores = [];
@@ -27,4 +27,4 @@ class ffcuclcalculator extends scorecalculator {
 
 }
 
-module.exports = ffcuclcalculator;
+module.exports = ffcCupscalculator;
