@@ -37,6 +37,7 @@ async function getPlayers(teamId) {
   for (var i in players) {
     msg += players[i][0] + ',';
   }
+  msg += team.entry_history.bank / 10 + ',';
   return msg;
 }
 

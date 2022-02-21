@@ -12,4 +12,4 @@ class ffcCupsDifferential extends differential {
 
 }
 
-module.exports = ffcCupsdifferential;
+module.exports = ffcCupsDifferential;

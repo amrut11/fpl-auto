@@ -1,6 +1,6 @@
 const Arsenal = { 'Hashwanth': 496, 'Arun': 50167, 'Abinav': 25516, 'Venkatesh': 10840, 'Naveen': 7398, 'Prasannaa': 40997, 'Rajan': 1940010, 'Vijay': 35411 };
 
-const Villa = { 'Kunal': 1912641, 'Anupam VIL': 10785, 'Mihir VIL': 3317436, 'Aditya AVL': 88467, 'Suhas VIL': 925882, 'Himanshu VIL': 378795, 'Tushar': 300709, 'Rishabh VIL': 20770 };
+const Villa = { 'Kunal': 1912641, 'Anupam VIL': 10785, 'Mihir VIL': 3317436, 'Aditya VIL': 88467, 'Suhas VIL': 925882, 'Himanshu VIL': 378795, 'Tushar': 300709, 'Rishabh VIL': 20770 };
 
 const Brentford = { 'Jyotirmoy': 313589, 'Utsav': 951363, 'Soumik': 67084, 'Vishnu BRE': 167307, 'Saurabh BRE': 984338, 'Torkel': 6922, 'Eirik': 2170302, 'Christian': 115952 };
 

@@ -27,4 +27,4 @@ class ffcCupsCalculator extends scorecalculator {
 
 }
 
-module.exports = ffcCupscalculator;
+module.exports = ffcCupsCalculator;

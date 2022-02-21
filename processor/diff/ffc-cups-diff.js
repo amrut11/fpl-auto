@@ -3,8 +3,8 @@ const fplTeam = require('../request/fpl-team');
 const diffFinder = require('../diff/diff-finder');
 const sorter = require('../../utils/sorter');
 
-const FAC_MAP = {
-  24: 'FAC-QF', 25: 'FAC-SF', 26: 'FAC-Final', 27: 'CL-Qual'
+const SHEET_MAP = {
+  24: 'FAC-QF', 25: 'FAC-SF', 26: 'FAC-Final', 27: 'CL-Q1', 34: 'CL-Q2', 35: 'CL-Q2', 36: 'CL-QF', 37: 'CL-SF', 38: 'CL-Finals'
 }
 
 async function getDiffs(fpl, updateConfig, leagueConfig) {
@@ -23,7 +23,7 @@ async function getDiffs(fpl, updateConfig, leagueConfig) {
 }
 
 async function createFixtures(teams, gw, leagueConfig) {
-  var sheetName = gw <= 27 ? FAC_MAP[gw] : 'CL-R' + (gw - 27);
+  var sheetName = gw >= 28 && gw <= 33 ? 'CL-R' + (gw - 27) : SHEET_MAP[gw];
   var sheet = await ssService.getSheet(leagueConfig.league['sheet-id'], sheetName, 116, 24);
   var teamDetails = createTeamDetails(sheet, gw);
   var fixtureCount = leagueConfig.league['fixture-count'];

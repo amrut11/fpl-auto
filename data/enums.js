@@ -153,7 +153,7 @@ const LEAGUES = Object.freeze({
   HAVEN_CL: {
     'name': 'Haven CL',
     'sheet-id': process.env.HAVEN_CUP_SHEET_ID,
-    'fixture-count': 12,
+    'fixture-count': 15,
   },
   FFFL: {
     'name': 'FFFL',
