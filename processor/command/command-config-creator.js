@@ -93,12 +93,16 @@ async function createConfig(command, input) {
       configs.push(createCustomUpdateConfig('Live Match Alert', 'LiveMatch', input));
       break;
     case BotCommands.FFC_SCORES.command:
-      await addScoringConfig(configs, 'FFC', 'FFC-Individual');
-      await addScoringConfig(configs, 'FFC-2', 'FFC2-Individual');
-      await addScoringConfig(configs, 'FFC', 'FFC-H2H');
-      await addScoringConfig(configs, 'FFC-2', 'FFC2-H2H');
-      await addScoringConfig(configs, 'FFC', 'FFC-Cups');
-      await addDiffConfig(configs, 'FFC-Cups', 'FFC-Cups');
+      if (input == 'i') {
+        await addScoringConfig(configs, 'FFC', 'FFC-Individual');
+        await addScoringConfig(configs, 'FFC-2', 'FFC2-Individual');
+      } else if (input == 'l') {
+        await addScoringConfig(configs, 'FFC', 'FFC-H2H');
+        await addScoringConfig(configs, 'FFC-2', 'FFC2-H2H');
+      } else if (input == 'c') {
+        await addScoringConfig(configs, 'FFC', 'FFC-Cups');
+        await addDiffConfig(configs, 'FFC-Cups', 'FFC-Cups');
+      }
       break;
     case BotCommands.HAVEN_LEAGUE_PP.command:
       configs.push(createCustomUpdateConfig('Haven League Nomination', 'Haven-League-Nomination', input));
