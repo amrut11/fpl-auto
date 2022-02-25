@@ -105,9 +105,6 @@ const BotCommands = Object.freeze({
     'command': 'team_score',
     'type': 'public'
   },
-  VACCINE_ALERT: {
-    'command': 'vaccine_alert'
-  }
 });
 
 const LEAGUES = Object.freeze({

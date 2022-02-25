@@ -12,7 +12,6 @@ const hmtRanks = require('./processor/request/hmt-ranks');
 const fplDataWriter = require('./spreadsheet/writer/fpl-data-writer');
 const plannerTeamsWriter = require('./spreadsheet/writer/planner-teams-writer');
 
-const vaccine = require('./alerts/vaccine-alert-service');
 const priceChange = require('./alerts/price-change-service');
 
 const havenHistory = require('./processor/data/haven-history');
@@ -95,11 +94,6 @@ app.get('/haven-history', async function(req, res) {
 
 app.get('/price-change', async function(req, res) {
   await priceChange.checkChanges();
-  res.render('index');
-});
-
-app.get('/vaccine', async function(req, res) {
-  await vaccine.alert();
   res.render('index');
 });
 

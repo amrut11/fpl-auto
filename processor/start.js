@@ -7,7 +7,6 @@ const fullLeague = require('./full-league');
 const havenClDiff = require('./diff/haven-cl-diff');
 const ffcCupsDiff = require('./diff/ffc-cups-diff');
 const liveMatches = require('./live/live-matches');
-const vaccine = require('./live/vaccine');
 
 const bonusReader = require('../spreadsheet/reader/bonus-reader');
 const tournDataReader = require('../spreadsheet/reader/tourn-data-reader');
@@ -185,9 +184,6 @@ async function readDetails(fpl, updateConfig) {
   } else if (calculateScores.startsWith('TeamScore')) {
     var input = calculateScores.split('::')[1];
     return await managerGwScore.getTeamScore(fpl, input);
-  } else if (calculateScores.startsWith('vaccine')) {
-    console.log('Fetching Vaccine details');
-    return await vaccine.check();
   }
 }
 

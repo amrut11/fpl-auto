@@ -125,9 +125,6 @@ async function createConfig(command, input) {
     case BotCommands.TEAM_SCORE.command:
       configs.push(createCustomUpdateConfig('Team Score', 'TeamScore', input));
       break;
-    case BotCommands.VACCINE_ALERT.command:
-      configs.push(createCustomUpdateConfig('Bangalore Vaccine', 'vaccine', input));
-      break;
   }
   return configs;
 }

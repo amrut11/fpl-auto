@@ -36,7 +36,7 @@ const Stoke = { 'Harshit STO': 877376, 'James': 210808, 'Mihir STO': 884697, 'Ra
 
 const Swansea = { 'Aritra SWA': 1182581, 'Praharaj': 1034358, 'Saheb': 4876914, 'Soumyadeep': 3420158, 'Soumyajit': 4762985, 'Wrishik': 1844141 };
 
-const WestBrom = { 'Abhijeet': 42878, 'Ankit': 13058, 'Anupam WBA': 10785, 'Karan WBA': 10113, 'Rishabh WBA': 1210554, 'Rohit WBA': 903450 };
+const WestBrom = { 'Abhijeet': 42878, 'Ankit': 13058, 'Karan WBA': 10113, 'Rishabh WBA': 1210554, 'Rohit WBA': 903450 };
 
 const allPlayers = Object.assign({}, Barnsley, Birmingham, Blackburn, Blackpool, Bournemouth, Bristol, Cardiff, Derby, Fulham, Hull, Luton, Middlesbrough, Millwall, Nottingham, Qpr, Reading, Sheffield, Stoke, Swansea, WestBrom);
 

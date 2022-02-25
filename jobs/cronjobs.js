@@ -4,7 +4,6 @@ const priceChangeJob = require('./alert-jobs').priceChangeJob;
 const dailyGamesJob = require('./alert-jobs').dailyGamesJob;
 const updateJob = require('./update-jobs').updateJob;
 const dbHkJob = require('./housekeeping-jobs').dbHkJob;
-// const vaccineAlertJob = require('./alert-jobs').vaccineAlertJob;
 
 function startJobs() {
   fplAlertsPromotion.start();
@@ -13,7 +12,6 @@ function startJobs() {
   dailyGamesJob.start();
   updateJob.start();
   dbHkJob.start();
-  // vaccineAlertJob.start();
 }
 
 module.exports = { startJobs }
