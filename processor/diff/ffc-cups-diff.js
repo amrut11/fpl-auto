@@ -4,7 +4,7 @@ const diffFinder = require('../diff/diff-finder');
 const sorter = require('../../utils/sorter');
 
 const SHEET_MAP = {
-  24: 'FAC-QF', 25: 'FAC-SF', 26: 'FAC-Final', 27: 'CL-Q1', 34: 'CL-Q2', 35: 'CL-Q2', 36: 'CL-QF', 37: 'CL-SF', 38: 'CL-Finals'
+24: 'FAC-QF', 25: 'FAC-SF', 26: 'FAC-Final', 27: 'CL-Q1', 34: 'CL-Q2', 35: 'CL-Q2', 36: 'CL-QF', 37: 'CL-SF', 38: 'CL-Finals'
 }
 
 async function getDiffs(fpl, updateConfig, leagueConfig) {
@@ -25,7 +25,7 @@ async function getDiffs(fpl, updateConfig, leagueConfig) {
 async function createFixtures(teams, gw, leagueConfig) {
   var sheetName = gw >= 28 && gw <= 33 ? 'CL-R' + (gw - 27) : SHEET_MAP[gw];
   var sheet = await ssService.getSheet(leagueConfig.league['sheet-id'], sheetName, 116, 24);
-  var teamDetails = createTeamDetails(sheet, gw);
+  var teamDetails = createTeamDetails(sheet);
   var fixtureCount = leagueConfig.league['fixture-count'];
   let fixtures = [];
   for (var i = 0; i < fixtureCount + 3; i++) {
@@ -44,26 +44,35 @@ async function createFixtures(teams, gw, leagueConfig) {
   return fixtures;
 }
 
-function createTeamDetails(sheet, gw) {
+function createTeamDetails(sheet) {
   var teamDetails = new Object();
   for (var i = 0; i < 8; i++) {
     for (var j = 0; j < 5; j++) {
       var bench = '', penalty = false, scores = new Object();
       var row = 4 + i * 11;
       var teamName = ssService.getValue(sheet, row, 1 + j * 5);
-      for (var k = row; k < row + 10; k++) {
+      for (var k = row; k < row + 8; k++) {
         var pName = ssService.getValue(sheet, k, 2 + j * 5);
+        if (pName == '') {
+          continue;
+        }
         var nomination = ssService.getValue(sheet, k, 3 + j * 5);
-        scores[pName] = ssService.getValue(sheet, k, 4 + j * 5);
-        if (nomination == 'Pen') {
-          penalty = true;
-        } else if (nomination == 'B') {
+        if (nomination == 'B') {
           bench += pName + ',';
+        } else if (nomination == 'Pen') {
+          penalty = true;
+          scores[pName] = ssService.getValue(sheet, k, 4 + j * 5);
+        } else {
+          scores[pName] = ssService.getValue(sheet, k, 4 + j * 5);
         }
       }
+      scores = sorter.sort(scores);
       if (penalty) {
-        scores = sorter.sort(scores);
-        bench = scores[0][0] + ',' + scores[1][0] + ',' + scores[2][0];
+        for (var k = 0; k <= (scores.length - 5); k++) {
+          bench += scores[k][0] + ',';
+        }
+      } else {
+        bench += scores[scores.length - 1][0];
       }
       teamDetails[teamName] = bench;
     }

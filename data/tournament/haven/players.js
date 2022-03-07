@@ -75,7 +75,7 @@ const villarreal = {
 };
 
 const wolves = {
-  'Tanmay': 6295, 'Anson': 880321, 'Param': 886304, 'Daksh': 198782, 'Sidharth': 12217, 'Aniket V': 880134, 'Falak': 9516, 'Darshil': 877694, 'Saswat': 881918, 'Biswojit': 660260
+  'Tanmay': 6295, 'Anson': 880321, 'Param': 886304, 'Daksh': 198782, 'Sidharth': 12217, 'Aniket V': 880134, 'Falak': 9516, 'Darshil': 877694, 'Saswat': 881918, 'Yash V': 3375736
 };
 
 const freeAgents = {
