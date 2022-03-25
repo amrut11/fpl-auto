@@ -10,7 +10,7 @@ async function createConfig(command, input) {
   let configs = [];
   switch (command) {
     case BotCommands.NEW_GW.command:
-      await addCompositeConfig(configs, BotCommands.UPDATE_DETAILS, BotCommands.UPDATE_TEAMS, BotCommands.UPDATE_DIFFS, BotCommands.LEAGUE_CHIPS, BotCommands.LEAGUE_STATS);
+      await addCompositeConfig(configs, BotCommands.UPDATE_DETAILS, BotCommands.LEAGUE_CHIPS, BotCommands.LEAGUE_STATS);
       break;
     case BotCommands.UPDATE_LEAGUE.command:
       await addCompositeConfig(configs, BotCommands.LEAGUE_INDIVIDUAL, BotCommands.LEAGUE_H2H, BotCommands.LEAGUE_DIFFS);
@@ -22,7 +22,7 @@ async function createConfig(command, input) {
       await addCompositeConfig(configs, BotCommands.GET_DIFFS, BotCommands.GET_LIVE_SCORE);
       break;
     case BotCommands.UPDATE_DETAILS.command:
-      await addConfigs(configs, 'Yes', 'None', 'None', 'None');
+      await addConfigs(configs, 'Yes', 'Yes', 'Update', 'None');
       break;
     case BotCommands.UPDATE_LIVE.command:
       await addScoringConfig(configs, 'FFC', 'Live');

@@ -11,6 +11,7 @@ const BONUS_INDEX = 6;
 const FIX_ROW_MAP = [0, 3, 3, 8, 8, 13, 13, 18, 18, 23, 23, 28, 28, 28, 33, 33, 38, 38, 43, 43, 48, 48, 48, 53, 53, 58, 58, 63, 63, 68, 68, 73, 73, 78, 78, 83, 83, 88, 88];
 const BONUS_COL_MAP = [0, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 11, 12, 12, 13, 13, 14, 14, 15, 15, 16, 16, 17, 17, 18, 18, 19, 19];
 const HMT_ROW_MAP = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 71, 0, 139, 0, 175, 0, 195, 0, 207, 0, 215, 215, 0, 221, 0, 0];
+const HCL_ROW_MAP = [164, 174, 184, 190, 196, 200, 204];
 
 async function getScores(fpl) {
   var doc = await ssService.getDoc(FIXTURE_SHEET_ID);
@@ -21,7 +22,7 @@ async function getScores(fpl) {
     msg += ':::' + await getCupScores(gw, doc, 3);
     msg += ':::' + await getCupScores(gw, doc, 17);
   }
-  if (gw >= 21 && gw <= 37) {
+  if (gw >= 32 && gw <= 37) {
     msg += ':::' + await getHclScores(gw);
   }
   var hmtRow = HMT_ROW_MAP[gw];
@@ -110,8 +111,8 @@ async function getHclScores(gw) {
 
 function getHclRoundScores(sheet, gw) {
   var msg = '';
-  var rowNum = (gw - 21) * 16 + 4;
-  for (var i = 0; i < 15; i++) {
+  var rowNum = HCL_ROW_MAP[gw - 32];
+  for (var i = 0; i < HCL_ROW_MAP[gw - 31] - rowNum; i++) {
     var homeTeam = ssService.getValue(sheet, rowNum + i, 2);
     if (!homeTeam || homeTeam == '') {
       msg += '\n---------------------';
