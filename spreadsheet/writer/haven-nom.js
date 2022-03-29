@@ -7,6 +7,8 @@ const CUP_SHEET_ID = process.env.HAVEN_CUP_SHEET_ID;
 
 const TEAMS = ['Atletico', 'Barca', 'Betis', 'Bilbao', 'Celta', 'R Madrid', 'Sevilla', 'Sociedad', 'Valencia', 'Villarreal', 'Arsenal', 'Chelsea', 'Everton', 'Leeds', 'Leicester', 'Liverpool', 'Man City', 'Man Utd', 'Spurs', 'Wolves'];
 
+const CL_KO_SHEET_MAP = { 11: 'CL-QF1', 12: 'CL-QF2', 13: 'CL-SF1', 14: 'CL-SF2', 15: 'CL-F1', 16: 'CL-F2' };
+
 async function updateNoms(competition) {
   var sheet = await ssService.getSheet(NOM_SHEET_ID, 'PP-All');
   if (competition == 'League') {
@@ -123,11 +125,15 @@ function getClNoms(sheet) {
 }
 
 async function updateClNoms(noms) {
-  var sheet = await ssService.getSheet(CUP_SHEET_ID, 'CL-R' + noms.match);
+  var sheetName = CL_KO_SHEET_MAP[noms.match];
+  if (!sheetName) {
+    sheetName = 'CL-R' + noms.match;
+  }
+  var sheet = await ssService.getSheet(CUP_SHEET_ID, sheetName);
   for (var teamRow = 4; teamRow <= 43; teamRow += 13) {
     for (var col = 1; col <= 21; col += 5) {
       var nom = noms[ssService.getValue(sheet, teamRow, col)];
-      if (nom.chip == 'Yes') {
+      if (nom.chip == 'Yes' && noms.match <= 10) {
         sheet.getCell(teamRow - 1, col + 1).value = 'Chip';
         continue;
       } else if (nom.bench1 == '') {

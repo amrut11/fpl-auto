@@ -15,7 +15,7 @@ const chelsea = {
 };
 
 const betis = {
-  'Ankit K': 13058, 'Karan': 10113, 'Seth': 27872, 'Rohit S': 903450, 'Abhijeet': 42878, 'Zain': 1165, 'Rishabh S': 1210554, 'Anupam': 10785, 'Abhishek D': 2080442, 'Tushar': 300709
+  'Ankit K': 13058, 'Karan': 10113, 'Seth': 27872, 'Rohit S': 903450, 'Abhijeet': 42878, 'Zain': 1165, 'Rishabh S': 1210554, 'Amitoje': 1220625, 'Abhishek D': 2080442, 'Tushar': 300709
 };
 
 const everton = {
