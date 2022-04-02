@@ -89,7 +89,7 @@ async function updateTeamPpSheet(noms) {
         if (nom.chipGw == 'Game 1') {
           sheet.getCell(capRow, col).value = 'TC';
         } else {
-          sheet.getCell(capRow + 1, col).value = 'TC';
+          sheet.getCell(capRow, col + 1).value = 'TC';
         }
       }
     }

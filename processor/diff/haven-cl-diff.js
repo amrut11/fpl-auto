@@ -9,6 +9,9 @@ const LEAGUE_MAP = {
 
 async function getDiffs(fpl, updateConfig, leagueConfig) {
   var gw = await fpl.init(1000);
+  if (gw == 31) {
+    return ':::';
+  }
   var teams = updateConfig.matchConfig.teams;
   var fixtures = await createFixtures(teams, gw, leagueConfig);
   var avg = new Object();
