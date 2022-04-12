@@ -102,6 +102,11 @@ async function createConfig(command, input) {
       } else if (input == 'c') {
         await addScoringConfig(configs, 'FFC', 'FFC-Cups');
         await addDiffConfig(configs, 'FFC-Cups', 'FFC-Cups');
+      } else if (input == 'fh') {
+        await addScoringConfig(configs, 'Hustle', 'Hustle-Individual');
+        await addScoringConfig(configs, 'FFFL', 'FFFL-Individual');
+        await addScoringConfig(configs, 'FFFL', 'FFFL-H2H');
+        await addScoringConfig(configs, 'Hustle', 'Hustle-H2H');
       }
       break;
     case BotCommands.HAVEN_LEAGUE_PP.command:

@@ -22,7 +22,7 @@ tgMap[1733016171] = 'Brynal'
 tgMap[-413814520] = 'TG OC';
 tgMap[-456947877] = 'Noms Group';
 
-const misc = { 'gcl': 15550, 'cup': 7641957, 'hmt': 976543 };
+const misc = { 'gcl': 230, 'cup': 7641957, 'hmt': 976543 };
 
 const allPlayers = Object.assign({}, havenPlayers, hustlePlayers, ffcPlayers, ffc2Players, ffflPlayers, misc);
 

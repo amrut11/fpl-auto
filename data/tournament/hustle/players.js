@@ -44,7 +44,7 @@ const WBA = { 'Nidhin': 163818, 'Abhiyank': 107345, 'Dhruv': 579572, 'Kaustubh':
 
 const WHU = { 'Rishi': 92249, 'Manish': 888023, 'Lovesh': 21044, 'Utkarsh': 881149, 'Malay': 6390, 'piyush': 34086, 'Rishabh': 20770, 'James WHU': 210808 };
 
-const WOL = { 'Suraj': 26540, 'Siddharth': 877309, 'Ayyappa': 934933, 'Ashish': 97610, 'Harshal': 12967, 'Rahul WOL': 897706, 'Aman': 10662, 'Mihir': 884697 };
+const WOL = { 'Suraj': 26540, 'Siddharth': 877309, 'Ayyappa': 52144, 'Ashish': 97610, 'Harshal': 12967, 'Rahul WOL': 897706, 'Aman': 10662, 'Mihir': 884697 };
 
 const allPlayers = Object.assign({}, ARS, AVL, BIR, BLA, BOU, BRE, BHA, BUR, CHE, CRY, EVE, LEE, LEI, LIV, MCI, MUN, NEW, NOT, SOU, TOT, WAT, WBA, WHU, WOL);
 

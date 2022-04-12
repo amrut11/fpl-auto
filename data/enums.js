@@ -159,7 +159,7 @@ const LEAGUES = Object.freeze({
     'chip-col-index': 5,
     'no-of-managers': 128,
     'sub-multiplier': 0.5,
-    'diff-teams': ['Hull']
+    'diff-teams': ['Hull', 'Swansea']
   },
 });
 
