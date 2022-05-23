@@ -8,7 +8,7 @@ const Bournemouth = { 'Abdelrhman': 5174216, 'Amr': 1784681, 'Bahaa': 189470, 'A
 
 const Cardiff = { 'Aatish': 115515, 'Azriq': 3528856, 'Bob': 141608, 'Denis': 277581, 'Karthik': 3562985, 'Mark': 592, 'Paul CAR': 306125, 'Zaid': 5998 };
 
-const Derby = { 'Anish': 1388814, 'Anjan': 2887644, 'Diggaj': 1646088, 'Prajwol': 3628, 'Sagar': 2887064, 'Saroj': 1626694, 'Suresh': 2714045, 'Ujjawal': 2758176 };
+const Derby = { 'Rajiv': 5125992, 'Anjan': 2887644, 'Diggaj': 1646088, 'Prajwol': 3628, 'Sagar': 2887064, 'Saroj': 1626694, 'Shankar': 1875283, 'Ujjawal': 2758176 };
 
 const Fulham = { 'Kunal': 1912641, 'Martin': 933, 'Mauricio': 115759, 'Saunak': 209244, 'Soumyajit': 2844544, 'Star': 31188, 'Subhajit': 364238, 'Talha': 65120 };
 

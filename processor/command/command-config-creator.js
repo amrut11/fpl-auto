@@ -4,7 +4,7 @@ const BotCommands = require('../../data/enums').BotCommands;
 const tournMap = require('../../data/enums').TOURN_MAP;
 const matchConfigMap = require('../../data/enums').MATCH_CONFIG_MAP;
 
-const TOURNAMENTS = ['FFC', 'FFC-Cups', 'Hustle', 'Haven', 'FFFL'];
+const TOURNAMENTS = ['FFC', 'Hustle', 'Haven', 'FFFL'];
 
 async function createConfig(command, input) {
   let configs = [];
@@ -49,29 +49,29 @@ async function createConfig(command, input) {
       await addScoringConfig(configs, 'Haven', 'Haven-Overall');
       break;
     case BotCommands.LEAGUE_INDIVIDUAL.command:
-      await addScoringConfig(configs, 'Haven', 'Haven-Individual');
-      await addDiffConfig(configs, 'Haven', 'Haven-CL');
-      await addScoringConfig(configs, 'Haven', 'Haven-H2H');
-      await addScoringConfig(configs, 'Haven', 'Haven-Ownership-Top10');
+      // await addScoringConfig(configs, 'Haven', 'Haven-Individual');
+      // await addDiffConfig(configs, 'Haven', 'Haven-CL');
+      // await addScoringConfig(configs, 'Haven', 'Haven-H2H');
+      // await addScoringConfig(configs, 'Haven', 'Haven-Ownership-Top10');
       break;
     case BotCommands.LEAGUE_DIFFS.command:
       await addDiffConfig(configs, 'Haven', 'Haven-H2H');
       break;
     case BotCommands.PERSONAL_FAST.command:
-      await addScoringConfig(configs, 'FFFL', 'FFFL-H2H');
-      await addScoringConfig(configs, 'Hustle', 'Hustle-H2H');
+      // await addScoringConfig(configs, 'FFFL', 'FFFL-H2H');
+      //  await addScoringConfig(configs, 'Hustle', 'Hustle-H2H');
       break;
     case BotCommands.PERSONAL_SLOW.command:
-      await addScoringConfig(configs, 'Hustle', 'Hustle-Individual');
-      await addScoringConfig(configs, 'FFFL', 'FFFL-Individual');
+      // await addScoringConfig(configs, 'Hustle', 'Hustle-Individual');
+      // await addScoringConfig(configs, 'FFFL', 'FFFL-Individual');
       await addDiffConfig(configs, 'FFC', 'FFC-H2H');
-      await addDiffConfig(configs, 'Hustle', 'Hustle-H2H');
-      await addDiffConfig(configs, 'FFFL', 'FFFL-H2H');
+      // await addDiffConfig(configs, 'Hustle', 'Hustle-H2H');
+      // await addDiffConfig(configs, 'FFFL', 'FFFL-H2H');
       await addScoringConfig(configs, 'FFC', 'FFC-H2H');
-      await addScoringConfig(configs, 'FFC-2', 'FFC2-H2H');
-      await addScoringConfig(configs, 'FFC', 'FFC-Cups');
-      await addDiffConfig(configs, 'FFC-Cups', 'FFC-Cups');
-      configs.push(createCustomUpdateConfig('HUSTLE RUMBLE', 'Hustle-Rumble'));
+      // await addScoringConfig(configs, 'FFC-2', 'FFC2-H2H');
+      // await addScoringConfig(configs, 'FFC', 'FFC-Cups');
+      // await addDiffConfig(configs, 'FFC-Cups', 'FFC-Cups');
+      // configs.push(createCustomUpdateConfig('HUSTLE RUMBLE', 'Hustle-Rumble'));
       break;
     case BotCommands.LEAGUE_CHIPS.command:
       await addScoringConfig(configs, 'FFC', 'FFC-Chips');
@@ -80,11 +80,11 @@ async function createConfig(command, input) {
       await addScoringConfig(configs, 'Haven', 'Haven-Chips');
       break;
     case BotCommands.LEAGUE_STATS.command:
-      await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
-      await addScoringConfig(configs, 'Hustle', 'Hustle-Ownership');
-      await addScoringConfig(configs, 'FFFL', 'FFFL-Ownership');
+      //await addScoringConfig(configs, 'FFC', 'FFC-Ownership');
+      //  await addScoringConfig(configs, 'Hustle', 'Hustle-Ownership');
+      //   await addScoringConfig(configs, 'FFFL', 'FFFL-Ownership');
       await addScoringConfig(configs, 'Haven', 'Haven-Ownership');
-      await addScoringConfig(configs, 'Haven', 'Haven-Captains');
+      // await addScoringConfig(configs, 'Haven', 'Haven-Captains');
       break;
     case BotCommands.GET_BONUS.command:
       configs.push(createCustomUpdateConfig('Bonus Points', 'ReadBonus', input));
@@ -99,10 +99,11 @@ async function createConfig(command, input) {
       } else if (input == 'l') {
         await addScoringConfig(configs, 'FFC', 'FFC-H2H');
         await addScoringConfig(configs, 'FFC-2', 'FFC2-H2H');
+        await addDiffConfig(configs, 'FFC', 'FFC-H2H');
       } else if (input == 'c') {
         await addScoringConfig(configs, 'FFC', 'FFC-Cups');
         await addDiffConfig(configs, 'FFC-Cups', 'FFC-Cups');
-      } else if (input == 'fh') {
+      } else if (input == 'o') {
         await addScoringConfig(configs, 'Hustle', 'Hustle-Individual');
         await addScoringConfig(configs, 'FFFL', 'FFFL-Individual');
         await addScoringConfig(configs, 'FFFL', 'FFFL-H2H');

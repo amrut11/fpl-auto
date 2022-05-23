@@ -4,7 +4,7 @@ const diffFinder = require('../diff/diff-finder');
 const sorter = require('../../utils/sorter');
 
 const SHEET_MAP = {
-  24: 'FAC-QF', 25: 'FAC-SF', 26: 'FAC-Final', 27: 'CL-Q1', 34: 'CL-Q2', 35: 'CL-Q2', 36: 'CL-QF', 37: 'CL-SF', 38: 'CL-Finals'
+  24: 'FAC-QF', 25: 'FAC-SF', 26: 'FAC-Final', 27: 'CL-Q1', 34: 'CL-Q2', 35: 'CL-RO16', 36: 'CL-QF', 37: 'CL-SF', 38: 'CL-Finals'
 }
 
 async function getDiffs(fpl, updateConfig, leagueConfig) {

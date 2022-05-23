@@ -29,7 +29,7 @@ async function getDiffs(fpl, updateConfig, leagueConfig) {
 
 async function createFixtures(teams, gw, leagueConfig) {
   // var sheet = await ssService.getSheet(leagueConfig.league['sheet-id'], 'CL-R' + (gw - 20), 75, 24);
-  var sheet = await ssService.getSheet(leagueConfig.league['sheet-id'], 'CL-QF2', 75, 24);
+  var sheet = await ssService.getSheet(leagueConfig.league['sheet-id'], 'CL-F2', 75, 24);
   var teamDetails = createTeamDetails(sheet);
   var fixtureCount = leagueConfig.league['fixture-count'];
   let fixtures = [];
